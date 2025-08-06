@@ -31,5 +31,30 @@ class Nav {
       page: () => const HomeScreen(),
       binding: HomeControllerBinding(),
     ),
+    GetPage(
+      name: Routes.SPLASH,
+      page: () => const SplashScreen(),
+      binding: SplashControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.AUTH,
+      page: () => const AuthScreen(),
+      binding: AuthControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.LON_ENTRY,
+      page: () => const LonEntryScreen(),
+      binding: LonEntryControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILE,
+      page: () => const ProfileScreen(),
+      binding: ProfileControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.FORGOTPASSWORD,
+      page: () => const ForgotpasswordScreen(),
+      binding: ForgotpasswordControllerBinding(),
+    ),
   ];
 }

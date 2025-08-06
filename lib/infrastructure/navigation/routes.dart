@@ -4,5 +4,10 @@ class Routes {
     return HOME;
   }
 
+  static const AUTH = '/auth';
   static const HOME = '/home';
+  static const LON_ENTRY = '/lon-entry';
+  static const PROFILE = '/profile';
+  static const SPLASH = '/splash';
+  static const FORGOTPASSWORD = '/forgotpassword';
 }
