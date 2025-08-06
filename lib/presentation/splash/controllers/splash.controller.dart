@@ -1,3 +1,5 @@
+import 'package:epfin/infrastructure/navigation/bindings/controllers/home.controller.binding.dart';
+import 'package:epfin/presentation/home/home.screen.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
@@ -12,6 +14,9 @@ class SplashController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    Future.delayed(const Duration(seconds: 4), () {
+      Get.offAll(() => const HomeScreen(), binding: HomeControllerBinding());
+    });
   }
 
   @override
