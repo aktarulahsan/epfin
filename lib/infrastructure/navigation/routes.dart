@@ -5,9 +5,10 @@ class Routes {
   }
 
   static const AUTH = '/auth';
+  static const FORGOTPASSWORD = '/forgotpassword';
   static const HOME = '/home';
   static const LON_ENTRY = '/lon-entry';
   static const PROFILE = '/profile';
   static const SPLASH = '/splash';
-  static const FORGOTPASSWORD = '/forgotpassword';
+  static const BOTTOM_NAVE = '/bottom-nave';
 }

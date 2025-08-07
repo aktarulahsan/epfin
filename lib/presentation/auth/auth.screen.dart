@@ -69,7 +69,7 @@ class AuthScreen extends GetView<AuthController> {
                             const SizedBox(height: 30), // Adjust spacing to match image
                             // Email Field
                             TextField(
-                              controller: TextEditingController(text: 'tawfiq.it@energypac.com'),
+                              controller: controller.email.value,
                               cursorColor: Colors.white,
                               decoration: const InputDecoration(
                                 labelText: 'Email',
@@ -90,6 +90,7 @@ class AuthScreen extends GetView<AuthController> {
                             // Password Field
                             TextField(
                               obscureText: true,
+                              controller: controller.password.value,
                               decoration: const InputDecoration(
                                 labelText: 'Enter Password',
                                 labelStyle: TextStyle(color: Colors.white),
@@ -106,7 +107,8 @@ class AuthScreen extends GetView<AuthController> {
                             // Login Button
                             ElevatedButton(
                               onPressed: () {
-                                Get.snackbar('Login', 'Login button pressed!');
+                                controller.checkLoginStatus();
+                                // Get.snackbar('Login', 'Login button pressed!');
                               },
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 50),

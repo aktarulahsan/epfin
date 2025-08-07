@@ -10,7 +10,7 @@ class ConfigEnvironments {
   static final List<Map<String, String>> _availableEnvironments = [
     {
       'env': Environments.LOCAL,
-      'url': 'http://localhost:8080/api/',
+      'url': 'https://epgl.schsems.com/',
     },
     {
       'env': Environments.DEV,

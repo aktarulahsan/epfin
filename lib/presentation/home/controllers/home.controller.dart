@@ -1,4 +1,15 @@
+import 'dart:convert';
+
+import 'package:epfin/infrastructure/dal/model/base_response.dart';
+import 'package:epfin/infrastructure/dal/model/login.model.dart';
+import 'package:epfin/infrastructure/dal/model/statement.model.dart';
+import 'package:epfin/infrastructure/dal/services/home.service.dart';
+import 'package:epfin/main.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import '../../../infrastructure/navigation/bindings/controllers/auth.controller.binding.dart';
+import '../../auth/auth.screen.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -10,6 +21,14 @@ class HomeController extends GetxController {
   final selectedTab = 'Loan Latest Balance'.obs;
   final showDrawer = false.obs;
 
+  var user = LoginModel().obs;
+
+  var date = "".obs;
+  var isLoading = 0.obs;
+
+
+  var statementList = <StatementModel>[].obs;
+
   @override
   void onInit() async {
     super.onInit();
@@ -17,10 +36,17 @@ class HomeController extends GetxController {
   }
 
   Future<void> _initializeData() async {
-    // final token = await storage.read(key: 'Token');
+    var a = await  prefs.get('userInfo');
+    // Map<String, dynamic> userInfo = jsonDecode(prefs.getString('userInfo') ?? '{}');
+    user.value = LoginModel.fromJson(jsonDecode(prefs.getString('userInfo') ?? '{}'));
+    prefs.remove('mail');
+    prefs.setString('mail', user.value.email!);
+    final token = user.value.token;
     // name.value = (await storage.read(key: 'Name')) ?? '';
-    // email.value = (await storage.read(key: 'Email')) ?? '';
-
+    email.value = user.value.email! ??"";
+    name.value = user.value.name!;
+    date.value = DateFormat('dd-MMM-yyyy').format(DateTime.now());
+    getStatement();
     final hour = DateTime.now().hour;
     if (hour < 12) {
       greetingText.value = 'Good Morning,';
@@ -30,10 +56,34 @@ class HomeController extends GetxController {
       greetingText.value = 'Good Evening,';
     }
 
-    // if (token == null || token.isEmpty) {
-    //   Get.offAllNamed('/login');
-    // }
+
   }
+
+  Future<void> getStatement() async {
+      isLoading.value = 1;
+      var mail = prefs.get('mail');
+
+      await HomeService.getStatement(mail).then((value) async {
+        BaseResponse responses = BaseResponse();
+       try{
+         responses = BaseResponse.fromJson(value.data);
+         if (responses.dataList !=null) {
+           statementList.value = statementModelListFromJson(responses.dataList);
+         } else {
+
+         }
+       }catch(e){
+         print(e);
+       }finally{
+         isLoading.value = 0;
+       }
+      });
+
+      // Get.offAll(() =>   HomeView(), binding: HomeBinding());
+
+    }
+
+
 
   void selectTab(String tab) {
     selectedTab.value = tab;
@@ -41,7 +91,8 @@ class HomeController extends GetxController {
 
   void logout() async {
     // await storage.deleteAll();
-    Get.offAllNamed('/');
+    prefs.remove('userInfo');
+    Get.offAll(const AuthScreen(), binding: AuthControllerBinding());
   }
 
   void toggleDrawer() {

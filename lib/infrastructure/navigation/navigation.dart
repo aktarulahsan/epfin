@@ -36,7 +36,6 @@ class Nav {
       page: () => const HomeScreen(),
       binding: HomeControllerBinding(),
     ),
-
     GetPage(
       name: Routes.AUTH,
       page: () => const AuthScreen(),
@@ -56,6 +55,11 @@ class Nav {
       name: Routes.FORGOTPASSWORD,
       page: () => const ForgotpasswordScreen(),
       binding: ForgotpasswordControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.BOTTOM_NAVE,
+      page: () => const BottomNaveScreen(),
+      binding: BottomNaveControllerBinding(),
     ),
   ];
 }

@@ -23,7 +23,7 @@ class SplashScreen extends GetView<SplashController> {
   // }
   @override
   Widget build(BuildContext context) {
-    controller.goto();
+    controller.getUser();
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
