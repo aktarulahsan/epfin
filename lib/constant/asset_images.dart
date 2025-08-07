@@ -11,4 +11,9 @@ class AppAssetsImages {
   static const String logo2 = "assets/logo/epgl_logo2.png";
   static const String logo4 = "assets/logo/epgl_logo4.png";
   static const String logo3 = "assets/logo/epgl_logo3.png";
+  static const String logo6 = "assets/logo/epgl_logo6.png";
+
+
+
+  // epgl_logo6
 }

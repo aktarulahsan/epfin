@@ -3,19 +3,32 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../infrastructure/navigation/routes.dart';
 import 'controllers/splash.controller.dart';
 
 class SplashScreen extends GetView<SplashController> {
   const SplashScreen({super.key});
   // If you need to perform actions on widget load, use a Future in build or convert to StatefulWidget.
 
+  // void goto(){
+  //   Future.delayed(const Duration(seconds: 4), () {
+  //     try {
+  //       print('SplashController: Navigating to HomeScreen');
+  //       Get.offAllNamed(Routes.HOME);
+  //     } catch (e, stackTrace) {
+  //       print('SplashController: Navigation error: $e');
+  //       print('StackTrace: $stackTrace');
+  //     }
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
+    controller.goto();
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Container(decoration: const BoxDecoration(color: Colors.white)),
+          Container(decoration: const BoxDecoration(color: Colors.blue)),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -29,7 +42,7 @@ class SplashScreen extends GetView<SplashController> {
                     AppAssetsImages.logo4,
                     height: 100,
                     width: 150,
-                    // fit: BoxFit.cover,
+                    color: Colors.white,
                   ),
                 ),
               ),
