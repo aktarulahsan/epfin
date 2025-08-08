@@ -13,6 +13,7 @@ class LonEntryController extends GetxController {
 
   var balanceDate = DateTime.now().obs;
 
+  var shortCode = TextEditingController().obs;
   var totalLoan = TextEditingController().obs;
   var overDue = TextEditingController().obs;
   var ss = TextEditingController().obs;
@@ -59,4 +60,28 @@ class LonEntryController extends GetxController {
   void toggleDrawer() {
     showDrawer.value = !showDrawer.value;
   }
+
+
+var isLoading = 0.obs;
+  Future<void> getCompany() async {
+      isLoading.value = 1;
+      var mail = prefs.get('mail');
+
+      await LonEntryService.getStatement(mail).then((value) async {
+        BaseResponse responses = BaseResponse();
+       try{
+         responses = BaseResponse.fromJson(value.data);
+         if (responses.dataList !=null) {
+           statementList.value = statementModelListFromJson(responses.dataList);
+         } else {
+
+         }
+       }catch(e){
+         print(e);
+       }finally{
+         isLoading.value = 0;
+       }
+      });
+
+    }
 }

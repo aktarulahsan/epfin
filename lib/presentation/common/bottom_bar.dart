@@ -22,12 +22,13 @@ class _BottomBarState extends State<BottomBar> {
       // Navigate if needed
     } else if (index == 1) {
       print('Home tapped');
-      Get.offAllNamed(Routes.HOME);
-    } else if (index == 2) {
       Get.offAllNamed(Routes.LON_ENTRY);
-      print('Profile tapped');
-      // Navigate if needed
-    }
+    } 
+    // else if (index == 2) {
+    //   Get.offAllNamed(Routes.LON_ENTRY);
+    //   print('Profile tapped');
+    //   // Navigate if needed
+    // }
   }
 
   @override
@@ -40,13 +41,13 @@ class _BottomBarState extends State<BottomBar> {
           icon: Icon(Icons.account_balance),
           label: 'Loans',
         ),
-        BottomNavigationBarItem(
-          icon: Transform.translate(
-            offset: const Offset(0, 0),
-            child: const Icon(Icons.home),
-          ),
-          label: 'Home',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Transform.translate(
+        //     offset: const Offset(0, 0),
+        //     child: const Icon(Icons.home),
+        //   ),
+        //   label: 'Home',
+        // ),
         const BottomNavigationBarItem(
           icon: Icon(Icons.add_circle_outline),
           label: 'Loans Entry',

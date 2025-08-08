@@ -1,9 +1,10 @@
+import 'package:epfin/infrastructure/navigation/routes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../bottomNave/bottom_nave.screen.dart';
+ 
 import '../common/bottom_bar.dart';
 import 'controllers/lon_entry.controller.dart';
 
@@ -14,6 +15,16 @@ class LonEntryScreen extends GetView<LonEntryController> {
     Get.put(LonEntryController());
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.offAllNamed(Routes.HOME);
+        },
+        backgroundColor: Colors.blue, // Optional: set background color
+        shape: const CircleBorder(), // Ensures it's circular (optional)
+        child: const Icon(Icons.home),
+      ),
+
         bottomNavigationBar:   BottomBar(),
       body: Stack(
         children: [
@@ -110,18 +121,18 @@ class LonEntryScreen extends GetView<LonEntryController> {
                 SizedBox(height: 10,),
                 balanceDate(),
                 SizedBox(height: 10,),
-                totalLoan('Short Code *',controller.totalLoan.value),
+                totalLoan('Short Code *',controller.shortCode.value),
                 SizedBox(height: 10,),
                 totalLoan('Over Due *',controller.totalLoan.value),
 
                 SizedBox(height: 10,),
-                totalLoan('SS *',controller.totalLoan.value),
+                totalLoan('SS *',controller.ss.value),
 
                 SizedBox(height: 10,),
-                totalLoan('BL *',controller.totalLoan.value),
+                totalLoan('BL *',controller.bl.value),
 
                 SizedBox(height: 10,),
-                totalLoan('Status *',controller.totalLoan.value),
+                totalLoan('Status *',controller.status.value),
                 // SizedBox(
                 //   width: double.infinity,
                 //   child: ElevatedButton(

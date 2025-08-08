@@ -1,4 +1,4 @@
-import 'package:epfin/config.dart';
+ 
 
 class ApiEndPoints {
   ApiEndPoints._privateConstructor();
@@ -9,6 +9,8 @@ class ApiEndPoints {
   static const String login = "api/Account/login";
   // static const String getStatement = "api/Account/get-company-statement?Email=sahadat.26%40gmail.com'";
   static String getStatement(String mail) => "api/Account/get-company-statement?Email=$mail";
+  static String getCompany(String mail) => "api/Account/get-company-list?Email=$mail";
+  // api/Account/get-company-list?Email=sahadat.26%40gmail.com
   static const String checkUserExist = "user/check-user";
   static const String register = "auth/user/register";
   static const String getMenuProtectedData = "api/menuPassword/list";

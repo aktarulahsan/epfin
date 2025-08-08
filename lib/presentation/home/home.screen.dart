@@ -1,5 +1,4 @@
 import 'package:epfin/infrastructure/dal/model/statement.model.dart';
-import 'package:epfin/presentation/bottomNave/bottom_nave.screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -14,6 +13,14 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.blue, // Optional: set background color
+        shape: const CircleBorder(), // Ensures it's circular (optional)
+        child: const Icon(Icons.home),
+      ),
+
       body: Stack(
         children: [
           // Gradient header
@@ -202,7 +209,7 @@ class LoanStatement extends StatelessWidget {
               height: 30,
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                color: Color(0xFF5197d5),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
               ),
               alignment: Alignment.centerLeft,
@@ -231,7 +238,7 @@ class LoanStatement extends StatelessWidget {
                 children: [
                   // Header Row
                   const TableRow(
-                    decoration: BoxDecoration(color: Color(0xFFE0E0E0)),
+                    decoration: BoxDecoration(color: Color(0xFF337cf4),),
                     children: [
                       Padding(
                         padding: EdgeInsets.all(2.0),

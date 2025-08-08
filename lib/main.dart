@@ -26,6 +26,7 @@ class Main extends StatelessWidget {
       initialRoute: initialRoute,
       getPages: Nav.routes,
       debugShowCheckedModeBanner: false,
+      defaultTransition: Transition.noTransition,
     );
   }
 }

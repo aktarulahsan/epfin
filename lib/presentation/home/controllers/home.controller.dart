@@ -79,8 +79,6 @@ class HomeController extends GetxController {
        }
       });
 
-      // Get.offAll(() =>   HomeView(), binding: HomeBinding());
-
     }
 
 
