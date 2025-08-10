@@ -15,11 +15,11 @@ class EnvironmentsBadge extends StatelessWidget {
     var env = ConfigEnvironments.getEnvironments()['env'];
     return env != Environments.PRODUCTION
         ? Banner(
-            location: BannerLocation.topStart,
-            message: env!,
-            color: env == Environments.QAS ? Colors.blue : Colors.purple,
-            child: child,
-          )
+          location: BannerLocation.topStart,
+          message: env!,
+          color: env == Environments.QAS ? Colors.blue : Colors.purple,
+          child: child,
+        )
         : SizedBox(child: child);
   }
 }
@@ -56,11 +56,11 @@ class Nav {
       page: () => const ForgotpasswordScreen(),
       binding: ForgotpasswordControllerBinding(),
     ),
-    // GetPage(
-    //   name: Routes.BOTTOM_NAVE,
-    //   page: () => const BottomNaveScreen(),
-    //   binding: BottomNaveControllerBinding(),
-    // ),
+    GetPage(
+      name: Routes.BOTTOM_NAVE,
+      page: () => BottomNaveScreen(),
+      binding: BottomNaveControllerBinding(),
+    ),
     GetPage(
       name: Routes.LON_HISTORY,
       page: () => const LonHistoryScreen(),

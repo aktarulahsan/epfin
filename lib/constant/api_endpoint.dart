@@ -9,14 +9,19 @@ class ApiEndPoints {
   static String getStatement(String mail) =>
       "api/Account/get-company-statement?Email=$mail";
 
-  static String getStatementHistory(String mail, String date) =>
-      "api/Account/get-company-statement-history?Email=$mail&BalanceDate=$date";  //2025-08-06
+  static String getStatementByShortCode(String shortCode, String date) =>
+      "api/Account/get-loan?shortCode=$shortCode&balanceDate=$date";
+  // api/Account/get-loan?shortCode=EEL&balanceDate=2025-08-09T00%3A00%3A00
 
+  static String getStatementHistory(String mail, String date) =>
+      "api/Account/get-company-statement-history?Email=$mail&BalanceDate=$date"; //2025-08-06
 
   static String getCompany(String mail) =>
       "api/Account/get-company-list?Email=$mail";
   static String submit() => "api/Account/add-update-loan";
   static String changePassword = "api/Account/ChangePassword";
+
+  static String getStatusList = "api/Account/get-status-list";
 
   //
   // // api/Account/get-company-list?Email=sahadat.26%40gmail.com

@@ -4,7 +4,7 @@ class Routes {
     return SPLASH;
   }
 
-  // static const BOTTOM_NAVE = '/bottom-nave';
+  static const BOTTOM_NAVE = '/bottom-nave';
   static const AUTH = '/auth';
   static const FORGOTPASSWORD = '/forgotpassword';
   static const HOME = '/home';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../infrastructure/navigation/routes.dart';
+
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
 
@@ -19,17 +20,16 @@ class _BottomBarState extends State<BottomBar> {
 
     if (index == 0) {
       print('Loans tapped');
-      Get.offAllNamed(Routes.LON_HISTORY);
+      Get.offAllNamed(Routes.CHANGE_PASSWORD);
       // Navigate if needed
     } else if (index == 1) {
       print('Home tapped');
-      Get.offAllNamed(Routes.LON_ENTRY);
-    } 
-    // else if (index == 2) {
-    //   Get.offAllNamed(Routes.LON_ENTRY);
-    //   print('Profile tapped');
-    //   // Navigate if needed
-    // }
+      Get.offAllNamed(Routes.HOME);
+    } else if (index == 2) {
+      Get.offAllNamed(Routes.PROFILE);
+      print('Profile tapped');
+      // Navigate if needed
+    }
   }
 
   @override
@@ -39,19 +39,20 @@ class _BottomBarState extends State<BottomBar> {
       onTap: _onItemTapped,
       items: [
         const BottomNavigationBarItem(
-          icon: Icon(Icons.compare_arrows_sharp),
-          label: 'Loan history',
+          icon: Icon(Icons.password),
+          label: 'Change Password',
         ),
-        // BottomNavigationBarItem(
-        //   icon: Transform.translate(
-        //     offset: const Offset(0, 0),
-        //     child: const Icon(Icons.home),
-        //   ),
-        //   label: 'Home',
-        // ),
+        BottomNavigationBarItem(
+          icon: Transform.translate(
+            offset: const Offset(0, 0),
+            child: const Icon(Icons.home),
+          ),
+          label: 'Home',
+        ),
+
         const BottomNavigationBarItem(
-          icon: Icon(Icons.add_circle_outline),
-          label: 'Loans Entry',
+          icon: Icon(Icons.person),
+          label: 'Profile',
         ),
       ],
     );

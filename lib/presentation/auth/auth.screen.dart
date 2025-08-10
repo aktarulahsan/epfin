@@ -33,12 +33,19 @@ class AuthScreen extends GetView<AuthController> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Blur effect
+                      filter: ui.ImageFilter.blur(
+                        sigmaX: 10,
+                        sigmaY: 10,
+                      ), // Blur effect
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.85, // Match image width
+                        width:
+                            MediaQuery.of(context).size.width *
+                            0.85, // Match image width
                         padding: const EdgeInsets.all(20.0),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF2762A1).withOpacity(0.4), // FF2762A1//#416ba6// Semi-transparent card background
+                          color: const Color(0xFF2762A1).withOpacity(
+                            0.4,
+                          ), // FF2762A1//#416ba6// Semi-transparent card background
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
@@ -66,7 +73,9 @@ class AuthScreen extends GetView<AuthController> {
                                 color: Colors.white,
                               ),
                             ),
-                            const SizedBox(height: 30), // Adjust spacing to match image
+                            const SizedBox(
+                              height: 30,
+                            ), // Adjust spacing to match image
                             // Email Field
                             TextField(
                               controller: controller.email.value,
@@ -86,7 +95,9 @@ class AuthScreen extends GetView<AuthController> {
                               style: const TextStyle(color: Colors.white),
                               enabled: true, // Pre-filled, disable editing
                             ),
-                            const SizedBox(height: 20), // Increased spacing to match image
+                            const SizedBox(
+                              height: 20,
+                            ), // Increased spacing to match image
                             // Password Field
                             TextField(
                               obscureText: true,
@@ -107,24 +118,7 @@ class AuthScreen extends GetView<AuthController> {
                               ),
                               style: const TextStyle(color: Colors.white),
                             ),
-                            // TextField(
-                            //   obscureText: true,
-                            //   cursorColor: Colors.black,
-                            //   controller: controller.password.value,
-                            //   decoration: const InputDecoration(
-                            //     labelText: 'Enter Password',
-                            //     filled: true, // Enable background fill
-                            //     fillColor: Colors.white, // Set background color to white
-                            //     labelStyle: TextStyle(color: Colors.black),
-                            //     enabledBorder: OutlineInputBorder(
-                            //       borderSide: BorderSide(color: Colors.black),
-                            //     ),
-                            //     focusedBorder: OutlineInputBorder(
-                            //       borderSide: BorderSide(color: Colors.blue),
-                            //     ),
-                            //   ),
-                            //   style: const TextStyle(color: Colors.black),
-                            // ),
+
                             const SizedBox(height: 30), // Adjusted spacing
                             // Login Button
                             ElevatedButton(
@@ -142,7 +136,9 @@ class AuthScreen extends GetView<AuthController> {
                               ),
                               child: const Text('Login'),
                             ),
-                            const SizedBox(height: 10), // Bottom padding to match image
+                            const SizedBox(
+                              height: 10,
+                            ), // Bottom padding to match image
                           ],
                         ),
                       ),

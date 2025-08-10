@@ -23,6 +23,26 @@ class LonEntryService {
     return response!;
   }
 
+  static Future<Response> getStatusList() async {
+    //get-status-list
+    //  https://dev.api.lead.academy:6071/auth/login
+    Response? response;
+    var dio = Dio();
+    var url = '${ApiEndPoints.baseUrl}${ApiEndPoints.getStatusList}';
+    print("url - logIn $url");
+    try {
+      response = await dio.get(
+        url,
+        options: Options(contentType: Headers.jsonContentType),
+      );
+    } catch (e) {
+      // if (kDebugMode) {
+      print(e);
+      // }
+    }
+    return response!;
+  }
+
   static Future<Response> submitData({
     required int id,
     required String shortCode,

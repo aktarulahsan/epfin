@@ -39,10 +39,10 @@ class SplashScreen extends GetView<SplashController> {
                   height: 100.0,
                   width: 300.0,
                   child: Image.asset(
-                    AppAssetsImages.logo4,
+                    AppAssetsImages.logo,
                     height: 100,
                     width: 150,
-                    color: Colors.white,
+                    // color: Colors.white,
                   ),
                 ),
               ),

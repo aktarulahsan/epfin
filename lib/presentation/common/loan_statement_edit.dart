@@ -1,128 +1,20 @@
-import 'package:epfin/infrastructure/dal/model/statement.model.dart';
 import 'package:epfin/infrastructure/navigation/routes.dart';
-import 'package:epfin/presentation/bottomNave/bottom_nave.screen.dart';
-import 'package:epfin/presentation/common/home_topbar.dart';
-import 'package:epfin/presentation/common/loan_statement_edit.dart';
-import 'package:epfin/presentation/common/loan_statement_view.dart';
+import 'package:epfin/presentation/home/controllers/home.controller.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../common/bottom_bar.dart';
-import '../common/custom_drawer.dart';
-import 'controllers/home.controller.dart';
+import '../../infrastructure/dal/model/statement.model.dart';
 
-class HomeScreen extends GetView<HomeController> {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.offAllNamed(Routes.LON_ENTRY);
-        },
-        backgroundColor: Colors.blue, // Optional: set background color
-        shape: const CircleBorder(), // Ensures it's circular (optional)
-        child: const Icon(Icons.add_circle),
-      ),
-      // drawer: const CustomDrawer(),
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Obx(() {
-              return HomeTopbar(
-                title: 'Loan Latest Balance UpTo ${controller.date.value}',
-                user: controller.name.value ?? '',
-              );
-            }),
-          ),
-
-          // Main Content Below Header
-          Positioned(
-            top: 150,
-            left: 0,
-            right: 0,
-            bottom: 50,
-            child: Obx(() {
-              if (controller.isLoading.value == 1) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return ListView.builder(
-                  itemCount: controller.statementList.length,
-                  itemBuilder: (context, index) {
-                    var model = controller.statementList[index];
-
-                    if (controller.user.value.userType == 1) {
-                      var date1 = DateFormat(
-                        'dd-MMM-yyyy',
-                      ).format(model.balanceDate!);
-                      var date2 = DateFormat(
-                        'dd-MMM-yyyy',
-                      ).format(DateTime.now());
-                      if (date1 == date2) {
-                        return LoanStatementEdit(
-                          model: controller.statementList[index],
-                          from: 0,
-                        );
-                      } else {
-                        return LoanStatementView(
-                          model: controller.statementList[index],
-                          from: 0,
-                        );
-                      }
-                    } else {
-                      final model = controller.statementList[index];
-                      return LoanStatementView(model: model, from: 0);
-                    }
-                  },
-                );
-              }
-            }),
-          ),
-        ],
-      ),
-      // bottomNavigationBar: BottomBar(),
-      bottomNavigationBar: BottomNaveScreen(),
-    );
-  }
-}
-
-// Placeholder Widgets
-// class TopBar extends GetView<HomeController> {
-//   const TopBar({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return AppBar(
-//       title: const Text('Home'),
-//       centerTitle: true,
-//       actions: [
-//         IconButton(
-//           icon: const Icon(Icons.menu),
-//           onPressed: controller.toggleDrawer,
-//         ),
-//       ],
-//       leading: IconButton(
-//         icon: const Icon(Icons.logout),
-//         onPressed: controller.logout,
-//       ),
-//     );
-//   }
-// }
-
-class LoanStatement extends StatelessWidget {
-  LoanStatement({super.key, required this.model});
+class LoanStatementEdit extends StatelessWidget {
+  LoanStatementEdit({super.key, required this.model, required this.from});
   StatementModel model;
+  var from;
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<HomeController>();
+
     return SizedBox(
       height: 100, // Adjust height as needed to perfectly fit one row
       child: Card(
@@ -145,6 +37,7 @@ class LoanStatement extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: 15,
                 ),
               ),
             ),
@@ -163,10 +56,10 @@ class LoanStatement extends StatelessWidget {
                 border: TableBorder.all(color: Colors.grey),
                 children: [
                   // Header Row
-                  const TableRow(
-                    decoration: BoxDecoration(color: Color(0xFF337cf4)),
+                  TableRow(
+                    decoration: const BoxDecoration(color: Color(0xFF337cf4)),
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Text(
                           'Total Loan',
@@ -177,7 +70,7 @@ class LoanStatement extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Text(
                           'Over Due',
@@ -188,7 +81,7 @@ class LoanStatement extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Text(
                           'SS',
@@ -199,7 +92,7 @@ class LoanStatement extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Text(
                           'BL',
@@ -210,7 +103,7 @@ class LoanStatement extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Text(
                           'Status',
@@ -221,7 +114,10 @@ class LoanStatement extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.all(2.0), child: Text('')),
+                      const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: Text(''),
+                      ),
                     ],
                   ),
 
@@ -233,7 +129,7 @@ class LoanStatement extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.totalLone!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Padding(
@@ -241,7 +137,7 @@ class LoanStatement extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.overDue!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Padding(
@@ -249,7 +145,7 @@ class LoanStatement extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.ss!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Padding(
@@ -257,7 +153,7 @@ class LoanStatement extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.bl!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Padding(
@@ -265,7 +161,7 @@ class LoanStatement extends StatelessWidget {
                         child: Text(
                           '${model.status}',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Padding(
@@ -309,10 +205,5 @@ class LoanStatement extends StatelessWidget {
   String formatToIndianCurrency(double value) {
     final format = NumberFormat.decimalPattern('en_IN');
     return format.format(value);
-  }
-
-  String dateFormat(DateTime date) {
-    final formattedDate = DateFormat('yyyy-MM-dd').format(date);
-    return formattedDate;
   }
 }

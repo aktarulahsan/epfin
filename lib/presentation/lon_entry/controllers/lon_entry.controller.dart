@@ -7,26 +7,16 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../infrastructure/navigation/bindings/controllers/auth.controller.binding.dart';
-import '../../../infrastructure/navigation/routes.dart';
 import '../../auth/auth.screen.dart';
 
-import 'package:epfin/infrastructure/dal/model/base_response.dart';
-import 'package:epfin/infrastructure/dal/model/company_model.dart';
 import 'package:epfin/infrastructure/dal/model/statement.model.dart';
-import 'package:epfin/infrastructure/dal/services/lon_entry.service.dart';
-import 'package:epfin/main.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
-import '../../../infrastructure/navigation/bindings/controllers/auth.controller.binding.dart';
-import '../../auth/auth.screen.dart';
 
 class LonEntryController extends GetxController {
   var shortCodeList = ['EEL', 'ABC', 'XYZ'].obs;
   var selectedShortCode = ''.obs;
   var balanceDate = DateTime.now().obs;
-  var balanceDateController = TextEditingController().obs; // Added for balance date
+  var balanceDateController =
+      TextEditingController().obs; // Added for balance date
   var totalLoan = TextEditingController().obs;
   var overDue = TextEditingController().obs;
   var ss = TextEditingController().obs;
@@ -34,16 +24,26 @@ class LonEntryController extends GetxController {
   var status = TextEditingController().obs;
   var companyList = <CompanyModel>[].obs;
   var selectShortCode = CompanyModel().obs;
+  var statusList = <String>[].obs;
+  var selectStatus = ''.obs;
   var isLoading = 0.obs;
+  var isLoading2 = 0.obs;
   var id = 0.obs;
   var responseSMS = ''.obs;
+  var responseMessage = ''.obs;
   var responseType = 0.obs;
+  var shortCode = ''.obs;
+
+  var invalidFields = <String>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    balanceDateController.value.text = DateFormat('dd/MM/yyyy').format(balanceDate.value);
+    balanceDateController.value.text = DateFormat(
+      'dd/MM/yyyy',
+    ).format(balanceDate.value);
     getCompany();
+    getStatusList();
     // Check if a StatementModel is passed as an argument
     if (Get.arguments is StatementModel) {
       _prefillForm(Get.arguments as StatementModel);
@@ -51,10 +51,13 @@ class LonEntryController extends GetxController {
   }
 
   void _prefillForm(StatementModel model) {
-    id.value = model.id ??0;
+    id.value = model.id ?? 0;
     selectedShortCode.value = model.shortCode ?? '';
+    shortCode.value = model.shortCode ?? '';
     balanceDate.value = model.balanceDate ?? DateTime.now();
-    balanceDateController.value.text = DateFormat('dd/MM/yyyy').format(balanceDate.value);
+    balanceDateController.value.text = DateFormat(
+      'dd/MM/yyyy',
+    ).format(balanceDate.value);
     totalLoan.value.text = formatToIndianCurrency(model.totalLone ?? 0);
     overDue.value.text = formatToIndianCurrency(model.overDue ?? 0);
     ss.value.text = formatToIndianCurrency(model.ss ?? 0);
@@ -62,8 +65,10 @@ class LonEntryController extends GetxController {
     status.value.text = model.status ?? '';
     // Set the selected company
     if (companyList.isNotEmpty) {
-      selectShortCode.value = companyList
-          .firstWhere((company) => company.shortCode == model.shortCode, orElse: () => CompanyModel());
+      selectShortCode.value = companyList.firstWhere(
+        (company) => company.shortCode == model.shortCode,
+        orElse: () => CompanyModel(),
+      );
     }
   }
 
@@ -81,11 +86,14 @@ class LonEntryController extends GetxController {
     );
     if (picked != null) {
       balanceDate.value = picked;
-      balanceDateController.value.text = DateFormat('dd/MM/yyyy').format(picked);
+      balanceDateController.value.text = DateFormat(
+        'dd/MM/yyyy',
+      ).format(picked);
     }
   }
 
-  String get formattedDate => DateFormat('dd/MM/yyyy').format(balanceDate.value);
+  String get formattedDate =>
+      DateFormat('dd/MM/yyyy').format(balanceDate.value);
 
   @override
   void onReady() {
@@ -94,12 +102,22 @@ class LonEntryController extends GetxController {
 
   @override
   void onClose() {
-    balanceDateController.value.dispose();
-    totalLoan.value.dispose();
-    overDue.value.dispose();
-    ss.value.dispose();
-    bl.value.dispose();
-    status.value.dispose();
+    // balanceDateController.value.dispose();
+    // selectedShortCode.value = '';
+    // totalLoan.value.dispose();
+    // overDue.value.dispose();
+    // ss.value.dispose();
+    // bl.value.dispose();
+    // status.value.dispose();
+    balanceDate.value = DateTime.now();
+    balanceDateController.value.clear();
+    totalLoan.value.clear();
+    selectedShortCode.value = '';
+    overDue.value.clear();
+    ss.value.clear();
+    bl.value.clear();
+    status.value.clear();
+
     super.onClose();
   }
 
@@ -122,6 +140,8 @@ class LonEntryController extends GetxController {
         responses = BaseResponse.fromJson(value.data);
         if (responses.dataList != null) {
           companyList.value = companyModelListFromJson(responses.dataList);
+          selectShortCode.value = companyList.first;
+          selectedShortCode.value = selectShortCode.value.shortCode ?? '';
         }
       } catch (e) {
         print(e);
@@ -131,81 +151,100 @@ class LonEntryController extends GetxController {
     });
   }
 
+  Future<void> getStatusList() async {
+    isLoading2.value = 1;
+
+    await LonEntryService.getStatusList().then((value) async {
+      BaseResponse responses = BaseResponse();
+      try {
+        responses = BaseResponse.fromJson(value.data);
+        if (responses.dataList != null) {
+          companyList.value = companyModelListFromJson(responses.dataList);
+          statusList.value =
+              responses.dataList.map((e) => e.toString()).toList();
+        }
+      } catch (e) {
+        print(e);
+      } finally {
+        isLoading2.value = 0;
+      }
+    });
+  }
+
   Future<void> submitData() async {
     isLoading.value = 1;
     var ids = id.value;
     var shortCodeVal = selectedShortCode.value;
-    var totalLoansVal = double.tryParse(totalLoan.value.text.replaceAll(',', '')) ?? 0;
-    var overDuesVal = double.tryParse(overDue.value.text.replaceAll(',', '')) ?? 0;
+    var totalLoansVal =
+        double.tryParse(totalLoan.value.text.replaceAll(',', '')) ?? 0;
+    var overDuesVal =
+        double.tryParse(overDue.value.text.replaceAll(',', '')) ?? 0;
     var sssVal = double.tryParse(ss.value.text.replaceAll(',', '')) ?? 0;
     var blsVal = double.tryParse(bl.value.text.replaceAll(',', '')) ?? 0;
     var statussVal = status.value.text;
 
     await LonEntryService.submitData(
-      id: ids,
-      shortCode: shortCodeVal,
-      totalLoan: totalLoansVal,
-      overDue: overDuesVal,
-      ss: sssVal,
-      bl: blsVal,
-      status: statussVal,
-      balanceDate: balanceDate.value,
-      entryDateTime: DateTime.now(),
-      hostName: "MyHostName",
-    ).then((value) async {
-      BaseResponse responses = BaseResponse();
-      try {
-        responses = BaseResponse.fromJson(value.data);
-        if (responses.success == true) {
-          responseSMS.value = responses.message!;
-          responseType.value = 0;
-          // {"message":"A loan record with the given ShortCode and BalanceDate already exists.","success":false,"data":null,"dataList":null}
+          id: ids,
+          shortCode: shortCodeVal,
+          totalLoan: totalLoansVal,
+          overDue: overDuesVal,
+          ss: sssVal,
+          bl: blsVal,
+          status: statussVal,
+          balanceDate: balanceDate.value,
+          entryDateTime: DateTime.now(),
+          hostName: "MyHostName",
+        )
+        .then((value) async {
+          BaseResponse responses = BaseResponse();
+          try {
+            responses = BaseResponse.fromJson(value.data);
+            if (responses.success == true) {
+              responseSMS.value = responses.message!;
+              responseType.value = 0;
+              responseMessage.value =
+                  shortCode.value.isNotEmpty
+                      ? 'Data Update Successfully'
+                      : 'Data Save Successfully';
 
-          // Get.defaultDialog(
-          //   title: "Success",
-          //   middleText: "Loan entry submitted successfully!",
-          //   textConfirm: "OK",
-          //   confirmTextColor: Colors.white,
-          //   onConfirm: () {
-          //     Get.back(); // Close dialog
-          //     Get.offNamed(Routes.HOME); // Navigate back to HomeScreen
-          //   },
-          // );
-        } else {
-          responseType.value = 1;
-          responseSMS.value = responses.message!;
-          // Get.defaultDialog(
-          //   title: "Warning",
-          //   middleText: responses.message ?? "Something went wrong!",
-          //   textConfirm: "OK",
-          //   confirmTextColor: Colors.white,
-          //   onConfirm: () => Get.back(),
-          // );
-        }
-      } catch (e) {
-        responseType.value = 2;
-        responseSMS.value = responses.message!;
-        print("Parse Error: $e");
-        // Get.defaultDialog(
-        //   title: "Warning",
-        //   middleText: "Invalid server response.",
-        //   textConfirm: "OK",
-        //   confirmTextColor: Colors.white,
-        //   onConfirm: () => Get.back(),
-        // );
-      } finally {
-        isLoading.value = 0;
-      }
-    }).catchError((e) {
-      isLoading.value = 0;
-      print("Submit Error: $e");
-      Get.defaultDialog(
-        title: "Warning",
-        middleText: "Failed to submit data.",
-        textConfirm: "OK",
-        confirmTextColor: Colors.white,
-        onConfirm: () => Get.back(),
-      );
-    });
+              // if (responseType.value == 0) {
+
+              // } else if (responseType.value == 1) {
+              //   responseMessage.value = 'Data Update Failed';
+              // } else {
+              //   responseMessage.value = 'Something Wrong';
+              // }
+            } else {
+              responseType.value = 1;
+              responseSMS.value = responses.message!;
+              responseMessage.value = 'Data Update Failed';
+            }
+          } catch (e) {
+            responseType.value = 2;
+            responseSMS.value = responses.message!;
+            responseMessage.value = 'Something Wrong';
+            print("Parse Error: $e");
+            // Get.defaultDialog(
+            //   title: "Warning",
+            //   middleText: "Invalid server response.",
+            //   textConfirm: "OK",
+            //   confirmTextColor: Colors.white,
+            //   onConfirm: () => Get.back(),
+            // );
+          } finally {
+            isLoading.value = 0;
+          }
+        })
+        .catchError((e) {
+          isLoading.value = 0;
+          print("Submit Error: $e");
+          Get.defaultDialog(
+            title: "Warning",
+            middleText: "Failed to submit data.",
+            textConfirm: "OK",
+            confirmTextColor: Colors.white,
+            onConfirm: () => Get.back(),
+          );
+        });
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:epfin/infrastructure/dal/model/login.model.dart';
 import 'package:epfin/infrastructure/dal/services/auth.service.dart';
 import 'package:epfin/infrastructure/navigation/bindings/controllers/controllers_bindings.dart';
+import 'package:epfin/infrastructure/navigation/routes.dart';
 import 'package:epfin/main.dart';
 import 'package:epfin/presentation/home/home.screen.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,15 @@ class AuthController extends GetxController {
       responses = BaseResponse.fromJson(value.data);
       if (responses.data != null) {
         //
+        LoginModel user = LoginModel.fromJson(responses.data);
         box.setString('userInfo', jsonEncode(responses.data));
         // box.setString('mail', responses.data.)
-        Get.offAll(HomeScreen(), binding: HomeControllerBinding());
+        if (user.ischangePassword == false) {
+          Get.offAllNamed(Routes.FORGOTPASSWORD);
+        } else {
+          Get.offAll(HomeScreen(), binding: HomeControllerBinding());
+        }
+        // Get.offAll(HomeScreen(), binding: HomeControllerBinding());
       } else {
         // box.remove('userInfo');
         // Get.offAll(const AuthScreen(), binding: AuthControllerBinding());

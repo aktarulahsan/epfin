@@ -45,32 +45,58 @@ class _HomeTopbarState extends State<HomeTopbar> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.logout),
-                    onPressed: logout,
-                    color: Colors.white,
-                  ),
-                  const Text(
-                    "EPFIN",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      decorationColor: Colors.white,
-                      decorationThickness: 2,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: toggleDrawer,
-                    color: Colors.white,
-                  ),
-                ],
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 0,
               ),
+              child: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                title: Text(
+                  "EPFIN",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                leading: IconButton(
+                  icon: const Icon(Icons.logout, color: Colors.white),
+                  onPressed: logout,
+                ),
+              ),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     IconButton(
+              //       icon: const Icon(Icons.logout),
+              //       onPressed: logout,
+              //       color: Colors.white,
+              //     ),
+              //     const Center(
+              //       child: Text(
+              //         "EPFIN",
+              //         textAlign: TextAlign.center,
+              //         style: TextStyle(
+              //           color: Colors.white,
+              //           fontSize: 20,
+              //           fontWeight: FontWeight.bold,
+              //           decorationColor: Colors.white,
+              //           decorationThickness: 2,
+              //         ),
+              //       ),
+              //     ),
+              //     // Text(" "),
+              //     // IconButton(
+              //     //   icon: const Icon(Icons.menu),
+              //     //   onPressed: toggleDrawer,
+              //     //   color: Colors.white,
+              //     // ),
+              //   ],
+              // ),
             ),
             // SizedBox(height: 10,),
             Padding(
@@ -78,7 +104,7 @@ class _HomeTopbarState extends State<HomeTopbar> {
               child: Text(
                 widget.user,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   // decoration: TextDecoration.underline,
@@ -87,14 +113,13 @@ class _HomeTopbarState extends State<HomeTopbar> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
-              child:
-              Text(
+              child: Text(
                 widget.title,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   decoration: TextDecoration.underline,

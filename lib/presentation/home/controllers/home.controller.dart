@@ -26,8 +26,8 @@ class HomeController extends GetxController {
   var date = "".obs;
   var isLoading = 0.obs;
 
-
   var statementList = <StatementModel>[].obs;
+  var statementObject = StatementModel().obs;
 
   @override
   void onInit() async {
@@ -36,14 +36,16 @@ class HomeController extends GetxController {
   }
 
   Future<void> _initializeData() async {
-    var a = await  prefs.get('userInfo');
+    var a = await prefs.get('userInfo');
     // Map<String, dynamic> userInfo = jsonDecode(prefs.getString('userInfo') ?? '{}');
-    user.value = LoginModel.fromJson(jsonDecode(prefs.getString('userInfo') ?? '{}'));
+    user.value = LoginModel.fromJson(
+      jsonDecode(prefs.getString('userInfo') ?? '{}'),
+    );
     prefs.remove('mail');
     prefs.setString('mail', user.value.email!);
     final token = user.value.token;
     // name.value = (await storage.read(key: 'Name')) ?? '';
-    email.value = user.value.email! ??"";
+    email.value = user.value.email! ?? "";
     name.value = user.value.name!;
     date.value = DateFormat('dd-MMM-yyyy').format(DateTime.now());
     getStatement();
@@ -55,33 +57,53 @@ class HomeController extends GetxController {
     } else {
       greetingText.value = 'Good Evening,';
     }
-
-
   }
 
   Future<void> getStatement() async {
-      isLoading.value = 1;
-      var mail = prefs.get('mail');
+    isLoading.value = 1;
+    var mail = prefs.get('mail');
 
-      await HomeService.getStatement(mail).then((value) async {
-        BaseResponse responses = BaseResponse();
-       try{
-         responses = BaseResponse.fromJson(value.data);
-         if (responses.dataList !=null) {
-           statementList.value = statementModelListFromJson(responses.dataList);
-         } else {
+    await HomeService.getStatement(mail).then((value) async {
+      BaseResponse responses = BaseResponse();
+      try {
+        responses = BaseResponse.fromJson(value.data);
+        if (responses.dataList != null) {
+          statementList.value = statementModelListFromJson(responses.dataList);
+        } else {}
+      } catch (e) {
+        print(e);
+      } finally {
+        isLoading.value = 0;
+      }
+    });
+  }
 
-         }
-       }catch(e){
-         print(e);
-       }finally{
-         isLoading.value = 0;
-       }
-      });
+  Future<StatementModel> getStatementByShortCode(
+    var shortCode,
+    var date,
+  ) async {
+    // isLoading.value = 1;
+    // var mail = prefs.get('mail');
 
-    }
-
-
+    await HomeService.getStatementByShortCode(shortCode, date).then((
+      value,
+    ) async {
+      BaseResponse responses = BaseResponse();
+      try {
+        responses = BaseResponse.fromJson(value.data);
+        if (responses.data != null) {
+          statementObject.value = StatementModel.fromJson(responses.data);
+        } else {
+          statementObject.value = StatementModel();
+        }
+      } catch (e) {
+        print(e);
+      } finally {
+        // isLoading.value = 0;
+      }
+    });
+    return statementObject.value;
+  }
 
   void selectTab(String tab) {
     selectedTab.value = tab;
@@ -95,7 +117,6 @@ class HomeController extends GetxController {
 
   void toggleDrawer() {
     showDrawer.value = !showDrawer.value;
-
   }
 
   @override

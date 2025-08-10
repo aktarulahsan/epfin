@@ -1,3 +1,4 @@
+import 'package:epfin/infrastructure/navigation/bindings/controllers/bottom_nave.controller.binding.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,8 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
-import 'package:shared_preferences_android/shared_preferences_android.dart';
-
+// import 'package:shared_preferences_android/shared_preferences_android.dart';
 
 late SharedPreferences prefs;
 void main() async {
@@ -23,6 +23,7 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: BottomNaveControllerBinding(),
       initialRoute: initialRoute,
       getPages: Nav.routes,
       debugShowCheckedModeBanner: false,

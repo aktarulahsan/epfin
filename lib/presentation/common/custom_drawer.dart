@@ -22,22 +22,18 @@ class CustomDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
+            decoration: BoxDecoration(color: Colors.blue),
             child: Text(
               'Menu',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+              style: TextStyle(color: Colors.white, fontSize: 24),
             ),
           ),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text('Profile'),
             onTap: () {
-              Get.back(); // Close the drawer
+              Get.offAllNamed(Routes.PROFILE);
+              // Get.back(); // Close the drawer
               // Add navigation or action for Menu 1 here
             },
           ),
@@ -46,7 +42,7 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Change Password'),
             onTap: () {
               Get.back();
-              Get.offAllNamed(Routes.FORGOTPASSWORD);
+              Get.offAllNamed(Routes.CHANGE_PASSWORD);
               // Add navigation or action for Menu 2 here
             },
           ),

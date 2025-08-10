@@ -1,6 +1,4 @@
-import 'package:epfin/infrastructure/navigation/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../infrastructure/dal/model/statement.model.dart';
@@ -15,9 +13,7 @@ class LoanStatementView extends StatelessWidget {
     return SizedBox(
       height: 100, // Adjust height as needed to perfectly fit one row
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         margin: const EdgeInsets.all(5),
         child: Column(
           children: [
@@ -36,6 +32,7 @@ class LoanStatementView extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  // fontSize: 20,
                 ),
               ),
             ),
@@ -49,38 +46,75 @@ class LoanStatementView extends StatelessWidget {
                   2: FlexColumnWidth(2),
                   3: FlexColumnWidth(2),
                   4: FlexColumnWidth(2),
-                  5: FlexColumnWidth(1.5),
+                  // 5: FlexColumnWidth(1.5),
                 },
                 border: TableBorder.all(color: Colors.grey),
                 children: [
                   // Header Row
                   TableRow(
-                    decoration: const BoxDecoration(color: Color(0xFF337cf4),),
+                    decoration: const BoxDecoration(color: Color(0xFF337cf4)),
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(2.0),
-                        child: Text('Total Loan', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'Total Loan',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       const Padding(
                         padding: EdgeInsets.all(2.0),
-                        child: Text('Over Due', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'Over Due',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       const Padding(
                         padding: EdgeInsets.all(2.0),
-                        child: Text('SS', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'SS',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       const Padding(
                         padding: EdgeInsets.all(2.0),
-                        child: Text('BL', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'BL',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       const Padding(
                         padding: EdgeInsets.all(2.0),
-                        child: Text('Status', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          'Status',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                      from ==0?  const Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child: Text(''),
-                      ):const SizedBox(),
+                      // from == 0
+                      //     ? const Padding(
+                      //       padding: EdgeInsets.all(2.0),
+                      //       child: Text(''),
+                      //     )
+                      //     : const SizedBox(),
                     ],
                   ),
 
@@ -89,36 +123,60 @@ class LoanStatementView extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(1.0),
-                        child: Text(formatToIndianCurrency(model.totalLone!), textAlign: TextAlign.center, style: TextStyle(fontSize: 10)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Text(formatToIndianCurrency(model.overDue!), textAlign: TextAlign.center, style: TextStyle(fontSize: 10)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Text(formatToIndianCurrency(model.ss!), textAlign: TextAlign.center, style: TextStyle(fontSize: 10)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Text(formatToIndianCurrency(model.bl!), textAlign: TextAlign.center, style: TextStyle(fontSize: 10)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Text('${model.status}', textAlign: TextAlign.center, style: TextStyle(fontSize: 10)),
-                      ),
-                      from ==0?  Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: InkWell(
-                          onTap: (){
-                            Get.toNamed(
-                              Routes.LON_ENTRY, // Assuming Routes.LOAN_ENTRY points to LonEntryScreen
-                              arguments: model,  // Pass the StatementModel object as an argument
-                            );
-                          },
-                          child: Icon(Icons.edit, size: 16),
+                        child: Text(
+                          formatToIndianCurrency(model.totalLone!),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 10),
                         ),
-                      ):SizedBox(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Text(
+                          formatToIndianCurrency(model.overDue!),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Text(
+                          formatToIndianCurrency(model.ss!),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Text(
+                          formatToIndianCurrency(model.bl!),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Text(
+                          '${model.status}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      // from == 0
+                      //     ? Padding(
+                      //       padding: const EdgeInsets.all(1.0),
+                      //       child: InkWell(
+                      //         onTap: () {
+                      //           Get.toNamed(
+                      //             Routes
+                      //                 .LON_ENTRY, // Assuming Routes.LOAN_ENTRY points to LonEntryScreen
+                      //             arguments:
+                      //                 model, // Pass the StatementModel object as an argument
+                      //           );
+                      //         },
+                      //         child: Icon(Icons.edit, size: 16),
+                      //       ),
+                      //     )
+                      //     : SizedBox(),
                     ],
                   ),
                 ],
@@ -134,5 +192,4 @@ class LoanStatementView extends StatelessWidget {
     final format = NumberFormat.decimalPattern('en_IN');
     return format.format(value);
   }
-
 }
