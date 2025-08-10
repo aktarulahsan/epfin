@@ -95,6 +95,7 @@ class HomeController extends GetxController {
 
   void toggleDrawer() {
     showDrawer.value = !showDrawer.value;
+
   }
 
   @override

@@ -14,6 +14,7 @@ List<StatementModel> statementModelListFromJson(dynamic v) =>
     List<StatementModel>.from(v.map((x) => StatementModel.fromJson(x)));
 
 class StatementModel {
+  int? id;
   DateTime? balanceDate;
   String? shortCode;
   String? companyName;
@@ -25,6 +26,7 @@ class StatementModel {
   String? displayCompany;
 
   StatementModel({
+    this.id,
     this.balanceDate,
     this.shortCode,
     this.companyName,
@@ -37,6 +39,7 @@ class StatementModel {
   });
 
   factory StatementModel.fromJson(Map<String, dynamic> json) => StatementModel(
+    id: json["id"],
     balanceDate: json["balanceDate"] == null ? null : DateTime.parse(json["balanceDate"]),
     shortCode: json["shortCode"],
     companyName: json["companyName"],
@@ -49,6 +52,7 @@ class StatementModel {
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "balanceDate": balanceDate?.toIso8601String(),
     "shortCode": shortCode,
     "companyName": companyName,

@@ -56,10 +56,20 @@ class Nav {
       page: () => const ForgotpasswordScreen(),
       binding: ForgotpasswordControllerBinding(),
     ),
+    // GetPage(
+    //   name: Routes.BOTTOM_NAVE,
+    //   page: () => const BottomNaveScreen(),
+    //   binding: BottomNaveControllerBinding(),
+    // ),
     GetPage(
-      name: Routes.BOTTOM_NAVE,
-      page: () => const BottomNaveScreen(),
-      binding: BottomNaveControllerBinding(),
+      name: Routes.LON_HISTORY,
+      page: () => const LonHistoryScreen(),
+      binding: LonHistoryControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.CHANGE_PASSWORD,
+      page: () => const ChangePasswordScreen(),
+      binding: ChangePasswordControllerBinding(),
     ),
   ];
 }

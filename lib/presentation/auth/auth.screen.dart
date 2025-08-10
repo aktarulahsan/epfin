@@ -38,7 +38,7 @@ class AuthScreen extends GetView<AuthController> {
                         width: MediaQuery.of(context).size.width * 0.85, // Match image width
                         padding: const EdgeInsets.all(20.0),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF2762A1).withOpacity(0.3), //#416ba6// Semi-transparent card background
+                          color: const Color(0xFF2762A1).withOpacity(0.4), // FF2762A1//#416ba6// Semi-transparent card background
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
@@ -90,9 +90,13 @@ class AuthScreen extends GetView<AuthController> {
                             // Password Field
                             TextField(
                               obscureText: true,
+                              cursorColor: Colors.white,
                               controller: controller.password.value,
                               decoration: const InputDecoration(
                                 labelText: 'Enter Password',
+                                fillColor: Colors.white,
+                                focusColor: Colors.white,
+
                                 labelStyle: TextStyle(color: Colors.white),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
@@ -103,6 +107,24 @@ class AuthScreen extends GetView<AuthController> {
                               ),
                               style: const TextStyle(color: Colors.white),
                             ),
+                            // TextField(
+                            //   obscureText: true,
+                            //   cursorColor: Colors.black,
+                            //   controller: controller.password.value,
+                            //   decoration: const InputDecoration(
+                            //     labelText: 'Enter Password',
+                            //     filled: true, // Enable background fill
+                            //     fillColor: Colors.white, // Set background color to white
+                            //     labelStyle: TextStyle(color: Colors.black),
+                            //     enabledBorder: OutlineInputBorder(
+                            //       borderSide: BorderSide(color: Colors.black),
+                            //     ),
+                            //     focusedBorder: OutlineInputBorder(
+                            //       borderSide: BorderSide(color: Colors.blue),
+                            //     ),
+                            //   ),
+                            //   style: const TextStyle(color: Colors.black),
+                            // ),
                             const SizedBox(height: 30), // Adjusted spacing
                             // Login Button
                             ElevatedButton(

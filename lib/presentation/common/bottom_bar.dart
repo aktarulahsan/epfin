@@ -19,6 +19,7 @@ class _BottomBarState extends State<BottomBar> {
 
     if (index == 0) {
       print('Loans tapped');
+      Get.offAllNamed(Routes.LON_HISTORY);
       // Navigate if needed
     } else if (index == 1) {
       print('Home tapped');
@@ -38,8 +39,8 @@ class _BottomBarState extends State<BottomBar> {
       onTap: _onItemTapped,
       items: [
         const BottomNavigationBarItem(
-          icon: Icon(Icons.account_balance),
-          label: 'Loans',
+          icon: Icon(Icons.compare_arrows_sharp),
+          label: 'Loan history',
         ),
         // BottomNavigationBarItem(
         //   icon: Transform.translate(
