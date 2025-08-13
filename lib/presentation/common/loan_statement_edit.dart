@@ -32,13 +32,45 @@ class LoanStatementEdit extends StatelessWidget {
               ),
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Text(
-                "${model.shortCode} ${model.companyName}",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
+              child: Row(
+                children: [
+                  Text(
+                    "${model.shortCode} ${model.companyName}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: InkWell(
+                      onTap: () {
+                        controller
+                            .getStatementByShortCode(
+                          model.shortCode,
+                          model.balanceDate.toString(),
+                        )
+                            .then((value) {
+                          if (value != null) {
+                            Get.toNamed(
+                              Routes.LON_ENTRY,
+                              arguments: value,
+                            );
+                          } else {
+                            Get.snackbar(
+                              "Error",
+                              "No data found for the selected date.",
+                              snackPosition: SnackPosition.BOTTOM,
+                            );
+                          }
+                        });
+                      },
+                      child: Icon(Icons.edit, size: 16),
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -51,7 +83,7 @@ class LoanStatementEdit extends StatelessWidget {
                   2: FlexColumnWidth(2),
                   3: FlexColumnWidth(2),
                   4: FlexColumnWidth(2),
-                  5: FlexColumnWidth(1.5),
+                  // 5: FlexColumnWidth(1.5),
                 },
                 border: TableBorder.all(color: Colors.grey),
                 children: [
@@ -66,6 +98,7 @@ class LoanStatementEdit extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -77,6 +110,7 @@ class LoanStatementEdit extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -88,6 +122,7 @@ class LoanStatementEdit extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -99,6 +134,7 @@ class LoanStatementEdit extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -110,14 +146,15 @@ class LoanStatementEdit extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child: Text(''),
-                      ),
+                      // const Padding(
+                      //   padding: EdgeInsets.all(2.0),
+                      //   child: Text(''),
+                      // ),
                     ],
                   ),
 
@@ -129,7 +166,7 @@ class LoanStatementEdit extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.totalLone!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -137,7 +174,7 @@ class LoanStatementEdit extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.overDue!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -145,7 +182,7 @@ class LoanStatementEdit extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.ss!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -153,7 +190,7 @@ class LoanStatementEdit extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.bl!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -161,36 +198,36 @@ class LoanStatementEdit extends StatelessWidget {
                         child: Text(
                           '${model.status}',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: InkWell(
-                          onTap: () {
-                            controller
-                                .getStatementByShortCode(
-                                  model.shortCode,
-                                  model.balanceDate.toString(),
-                                )
-                                .then((value) {
-                                  if (value != null) {
-                                    Get.toNamed(
-                                      Routes.LON_ENTRY,
-                                      arguments: value,
-                                    );
-                                  } else {
-                                    Get.snackbar(
-                                      "Error",
-                                      "No data found for the selected date.",
-                                      snackPosition: SnackPosition.BOTTOM,
-                                    );
-                                  }
-                                });
-                          },
-                          child: Icon(Icons.edit, size: 16),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(1.0),
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       controller
+                      //           .getStatementByShortCode(
+                      //             model.shortCode,
+                      //             model.balanceDate.toString(),
+                      //           )
+                      //           .then((value) {
+                      //             if (value != null) {
+                      //               Get.toNamed(
+                      //                 Routes.LON_ENTRY,
+                      //                 arguments: value,
+                      //               );
+                      //             } else {
+                      //               Get.snackbar(
+                      //                 "Error",
+                      //                 "No data found for the selected date.",
+                      //                 snackPosition: SnackPosition.BOTTOM,
+                      //               );
+                      //             }
+                      //           });
+                      //     },
+                      //     child: Icon(Icons.edit, size: 16),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

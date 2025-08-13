@@ -32,7 +32,7 @@ class LoanStatementView extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  // fontSize: 20,
+                  fontSize: 12,
                 ),
               ),
             ),
@@ -61,6 +61,7 @@ class LoanStatementView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -72,6 +73,7 @@ class LoanStatementView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -83,6 +85,7 @@ class LoanStatementView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -94,6 +97,7 @@ class LoanStatementView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -105,6 +109,7 @@ class LoanStatementView extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 10,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -126,7 +131,7 @@ class LoanStatementView extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.totalLone!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -134,7 +139,7 @@ class LoanStatementView extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.overDue!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -142,7 +147,7 @@ class LoanStatementView extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.ss!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -150,7 +155,7 @@ class LoanStatementView extends StatelessWidget {
                         child: Text(
                           formatToIndianCurrency(model.bl!),
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       Padding(
@@ -158,7 +163,7 @@ class LoanStatementView extends StatelessWidget {
                         child: Text(
                           '${model.status}',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
                       // from == 0

@@ -19,15 +19,28 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    //   floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    //    floatingActionButton:  controller.user.value.userType == 1
+    // ? FloatingActionButton(
+    //     onPressed: () {
+    //   Get.offAllNamed(Routes.LON_ENTRY);
+    // },
+    // backgroundColor: Colors.blue,
+    // shape: const CircleBorder(),
+    // child: const Icon(Icons.add_circle, color: Colors.white),
+    // )
+    //     : null, /
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.offAllNamed(Routes.LON_ENTRY);
-        },
-        backgroundColor: Colors.blue, // Optional: set background color
-        shape: const CircleBorder(), // Ensures it's circular (optional)
-        child: const Icon(Icons.add_circle),
-      ),
+      floatingActionButton: Obx(() {
+        return controller.user.value.userType == 1
+            ? FloatingActionButton(
+          onPressed: () {
+            Get.offAllNamed(Routes.LON_ENTRY);
+          },
+          child: Icon(Icons.add),
+        )
+            : SizedBox.shrink(); // Empty widget when condition is false
+      }),
       // drawer: const CustomDrawer(),
       body: Stack(
         children: [

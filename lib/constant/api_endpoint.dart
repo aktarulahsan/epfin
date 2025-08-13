@@ -1,7 +1,9 @@
 class ApiEndPoints {
   ApiEndPoints._privateConstructor();
   static final ApiEndPoints instance = ApiEndPoints._privateConstructor();
-  static const String baseUrl = "https://epgl.schsems.com/";
+  // static const String baseUrl = "https://epgl.schsems.com/";
+
+  static const String baseUrl = "http://116.68.205.179/";
 
   static const String splash = "splash";
   static const String login = "api/Account/login";

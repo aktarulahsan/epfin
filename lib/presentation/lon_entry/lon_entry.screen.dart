@@ -47,9 +47,9 @@ class LonEntryScreen extends GetView<LonEntryController> {
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            shortcode(controller),
+                            shortCordList(controller),
                             const SizedBox(height: 10),
-                            balanceDate(),
+                            balanceDate(controller),
                             const SizedBox(height: 10),
                             totalLoan(
                               'Total Loan',
@@ -253,7 +253,7 @@ class LonEntryScreen extends GetView<LonEntryController> {
   //   );
   // }
 
-  Widget shortcode(LonEntryController controller) {
+  /*Widget shortcode(LonEntryController controller) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -294,7 +294,7 @@ class LonEntryScreen extends GetView<LonEntryController> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: DropdownButton<String>(
-                value: currentValue,
+                value: controller.selectedShortCode.value,// currentValue,
                 hint: const Text('Select Short Code'),
                 isExpanded: true,
                 underline: const SizedBox(),
@@ -314,6 +314,62 @@ class LonEntryScreen extends GetView<LonEntryController> {
                     );
                     controller.selectedShortCode.value = value;
                   }
+                },
+              ),
+            );
+          }),
+        ),
+      ],
+    );
+  }*/
+
+  Widget shortCordList(LonEntryController controller) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Expanded(
+          flex: 3,
+          child: Text(
+            'Short Code *',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          flex: 7,
+          child: Obx(() {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(
+                  color:
+                  controller.invalidFields.contains('shortCode')
+                      ? Colors.red
+                      : Colors.transparent,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: DropdownButton<String>(
+                value:
+                controller.selectedShortCode.value.isEmpty
+                    ? null
+                    : controller.selectedShortCode.value,
+                hint: const Text('Select shortCode'),
+                isExpanded: true,
+                underline: const SizedBox(),
+                items:
+                controller.selectedShortCodeList
+                    .map(
+                      (status) => DropdownMenuItem<String>(
+                    value: status,
+                    child: Text(status),
+                  ),
+                )
+                    .toList(),
+
+                onChanged: (value) {
+                  controller.selectedShortCode.value = value ?? '';
+                  // controller.status.value.text = value ?? '';
                 },
               ),
             );
@@ -369,7 +425,7 @@ class LonEntryScreen extends GetView<LonEntryController> {
 
                 onChanged: (value) {
                   controller.selectStatus.value = value ?? '';
-                  // controller.status.value.text = value ?? '';
+                  controller.status.value.text = value ?? '';
                 },
               ),
             );
@@ -379,8 +435,8 @@ class LonEntryScreen extends GetView<LonEntryController> {
     );
   }
 
-  Widget balanceDate() {
-    final controller = Get.find<LonEntryController>();
+  Widget balanceDate(LonEntryController controller) {
+    // final controller = Get.find<LonEntryController>();
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -408,7 +464,11 @@ class LonEntryScreen extends GetView<LonEntryController> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: GestureDetector(
-                onTap: () => controller.pickDate(Get.context!),
+                // onTap: () => controller.pickDate(Get.context!),
+                onTap: controller.id.value == null || controller.id.value.toString().isEmpty
+                    ? () => controller.pickDate(Get.context!)
+                    : null, // Disable tap if id
+
                 child: AbsorbPointer(
                   child: TextField(
                     controller: controller.balanceDateController.value,

@@ -14,6 +14,7 @@ import 'package:epfin/infrastructure/dal/model/statement.model.dart';
 class LonEntryController extends GetxController {
   var shortCodeList = ['EEL', 'ABC', 'XYZ'].obs;
   var selectedShortCode = ''.obs;
+  var selectedShortCodeList = [].obs;
   var balanceDate = DateTime.now().obs;
   var balanceDateController =
       TextEditingController().obs; // Added for balance date
@@ -23,8 +24,9 @@ class LonEntryController extends GetxController {
   var bl = TextEditingController().obs;
   var status = TextEditingController().obs;
   var companyList = <CompanyModel>[].obs;
-  var selectShortCode = CompanyModel().obs;
-  var statusList = <String>[].obs;
+  // var selectShortCode = CompanyModel().obs;
+  var selectShortCode = ''.obs;
+  var statusList = [].obs;
   var selectStatus = ''.obs;
   var isLoading = 0.obs;
   var isLoading2 = 0.obs;
@@ -37,13 +39,13 @@ class LonEntryController extends GetxController {
   var invalidFields = <String>[].obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     balanceDateController.value.text = DateFormat(
       'dd/MM/yyyy',
     ).format(balanceDate.value);
-    getCompany();
-    getStatusList();
+      getCompany();
+    await getStatusList();
     // Check if a StatementModel is passed as an argument
     if (Get.arguments is StatementModel) {
       _prefillForm(Get.arguments as StatementModel);
@@ -63,12 +65,13 @@ class LonEntryController extends GetxController {
     ss.value.text = formatToIndianCurrency(model.ss ?? 0);
     bl.value.text = formatToIndianCurrency(model.bl ?? 0);
     status.value.text = model.status ?? '';
+    selectStatus.value = model.status ?? '';
     // Set the selected company
     if (companyList.isNotEmpty) {
-      selectShortCode.value = companyList.firstWhere(
-        (company) => company.shortCode == model.shortCode,
-        orElse: () => CompanyModel(),
-      );
+      // selectShortCode.value = companyList.firstWhere(
+      //   (company) => company.shortCode == model.shortCode,
+      //   orElse: () => CompanyModel(),
+      // );
     }
   }
 
@@ -140,8 +143,11 @@ class LonEntryController extends GetxController {
         responses = BaseResponse.fromJson(value.data);
         if (responses.dataList != null) {
           companyList.value = companyModelListFromJson(responses.dataList);
-          selectShortCode.value = companyList.first;
-          selectedShortCode.value = selectShortCode.value.shortCode ?? '';
+
+          selectedShortCodeList.value = companyList.map((e) => e.shortCode.toString()).toList();
+
+          selectShortCode.value = selectedShortCodeList.first;
+          selectedShortCode.value = selectShortCode.value ?? '';
         }
       } catch (e) {
         print(e);
@@ -160,8 +166,12 @@ class LonEntryController extends GetxController {
         responses = BaseResponse.fromJson(value.data);
         if (responses.dataList != null) {
           companyList.value = companyModelListFromJson(responses.dataList);
+          // statusList.value =
+          //     responses.dataList.map((e) => e.toString()).toList();
           statusList.value =
-              responses.dataList.map((e) => e.toString()).toList();
+              responses.dataList.map((e) => e['name'].toString()).toList();
+          selectStatus.value = statusList.isNotEmpty ? statusList.first : '';
+          status.value.text = selectStatus.value;
         }
       } catch (e) {
         print(e);

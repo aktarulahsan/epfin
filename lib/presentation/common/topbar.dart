@@ -27,7 +27,7 @@ class _TopbarState extends State<Topbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 170,
+      height: 175,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF004AAD), Color(0xFF0078FF)],

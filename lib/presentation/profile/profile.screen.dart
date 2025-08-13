@@ -17,15 +17,7 @@ class ProfileScreen extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Get.offAllNamed(Routes.HOME);
-      //   },
-      //   backgroundColor: Colors.blue,
-      //   shape: const CircleBorder(),
-      //   child: const Icon(Icons.home, color: Colors.white),
-      // ),
+
       bottomNavigationBar: BottomNaveScreen(),
       drawer: const CustomDrawer(),
       body: Stack(
@@ -37,27 +29,6 @@ class ProfileScreen extends GetView<ProfileController> {
             child: Topbar(title: "Profile"),
           ),
 
-          // Positioned(
-          //   top: 165,
-          //   left: 10,
-          //   right: 10,
-          //   bottom: 0,
-          //   child: Column(
-          //     children: [
-          //       Obx(
-          //         () => Text(
-          //           'Welcome, ${controller.user.value.name ?? 'User'}',
-          //           style: const TextStyle(
-          //             fontSize: 24,
-          //             fontWeight: FontWeight.bold,
-          //           ),
-          //         ),
-          //       ),
-          //       const SizedBox(height: 20),
-          //       // Add more profile related widgets here
-          //     ],
-          //   ),
-          // ),
           Positioned(
             top: 175,
             left: 10,
@@ -113,11 +84,11 @@ class ProfileScreen extends GetView<ProfileController> {
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            _profileRow(
-                              "User ID",
-                              user.userId?.toString() ?? "-",
-                            ),
-                            _profileRow("Host Name", user.hostName ?? "-"),
+                            // _profileRow(
+                            //   "User ID",
+                            //   user.userId?.toString() ?? "-",
+                            // ),
+                            // _profileRow("Host Name", user.hostName ?? "-"),
                             _profileRow(
                               "User Type",
                               _getUserType(user.userType),
@@ -126,12 +97,12 @@ class ProfileScreen extends GetView<ProfileController> {
                               "Last Update",
                               user.lastUpdate?.toString() ?? "-",
                             ),
-                            _profileRow(
-                              "Token",
-                              user.token != null
-                                  ? "Available"
-                                  : "Not Available",
-                            ),
+                            // _profileRow(
+                            //   "Token",
+                            //   user.token != null
+                            //       ? "Available"
+                            //       : "Not Available",
+                            // ),
                           ],
                         ),
                       ),
@@ -198,9 +169,9 @@ class ProfileScreen extends GetView<ProfileController> {
       case 0:
         return "Admin";
       case 1:
-        return "Manager";
+        return "CFO";
       case 2:
-        return "Staff";
+        return "Director";
       default:
         return "Unknown";
     }
