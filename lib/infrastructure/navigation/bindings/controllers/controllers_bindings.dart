@@ -6,4 +6,5 @@ export 'package:epfin/infrastructure/navigation/bindings/controllers/home.contro
 export 'package:epfin/infrastructure/navigation/bindings/controllers/lon_entry.controller.binding.dart'; 
 export 'package:epfin/infrastructure/navigation/bindings/controllers/lon_history.controller.binding.dart'; 
 export 'package:epfin/infrastructure/navigation/bindings/controllers/profile.controller.binding.dart'; 
+export 'package:epfin/infrastructure/navigation/bindings/controllers/registration.controller.binding.dart'; 
 export 'package:epfin/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart'; 

@@ -1,4 +1,3 @@
-import 'package:epfin/infrastructure/navigation/routes.dart';
 import 'package:epfin/presentation/common/topbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -343,29 +342,29 @@ class LonEntryScreen extends GetView<LonEntryController> {
                 color: Colors.grey[200],
                 border: Border.all(
                   color:
-                  controller.invalidFields.contains('shortCode')
-                      ? Colors.red
-                      : Colors.transparent,
+                      controller.invalidFields.contains('shortCode')
+                          ? Colors.red
+                          : Colors.transparent,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: DropdownButton<String>(
                 value:
-                controller.selectedShortCode.value.isEmpty
-                    ? null
-                    : controller.selectedShortCode.value,
+                    controller.selectedShortCode.value.isEmpty
+                        ? null
+                        : controller.selectedShortCode.value,
                 hint: const Text('Select shortCode'),
                 isExpanded: true,
                 underline: const SizedBox(),
                 items:
-                controller.selectedShortCodeList
-                    .map(
-                      (status) => DropdownMenuItem<String>(
-                    value: status,
-                    child: Text(status),
-                  ),
-                )
-                    .toList(),
+                    controller.selectedShortCodeList
+                        .map(
+                          (status) => DropdownMenuItem<String>(
+                            value: status,
+                            child: Text(status),
+                          ),
+                        )
+                        .toList(),
 
                 onChanged: (value) {
                   controller.selectedShortCode.value = value ?? '';
@@ -465,9 +464,11 @@ class LonEntryScreen extends GetView<LonEntryController> {
               ),
               child: GestureDetector(
                 // onTap: () => controller.pickDate(Get.context!),
-                onTap: controller.id.value == null || controller.id.value.toString().isEmpty
-                    ? () => controller.pickDate(Get.context!)
-                    : null, // Disable tap if id
+                onTap:
+                    controller.id.value == null ||
+                            controller.id.value.toString().isEmpty
+                        ? () => controller.pickDate(Get.context!)
+                        : null, // Disable tap if id
 
                 child: AbsorbPointer(
                   child: TextField(

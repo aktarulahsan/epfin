@@ -23,6 +23,11 @@ class ApiEndPoints {
   static String submit() => "api/Account/add-update-loan";
   static String changePassword = "api/Account/ChangePassword";
 
+  static String deleteUser(int userid) =>
+      "api/Account/ActiveDeactive?UserID=$userid";
+
+  static String register() => "api/Account/Register";
+
   static String getStatusList = "api/Account/get-status-list";
 
   //

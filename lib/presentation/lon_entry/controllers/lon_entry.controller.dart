@@ -14,7 +14,7 @@ import 'package:epfin/infrastructure/dal/model/statement.model.dart';
 class LonEntryController extends GetxController {
   var shortCodeList = ['EEL', 'ABC', 'XYZ'].obs;
   var selectedShortCode = ''.obs;
-  var selectedShortCodeList = [].obs;
+  var selectedShortCodeList = ['PUBLIC'].obs;
   var balanceDate = DateTime.now().obs;
   var balanceDateController =
       TextEditingController().obs; // Added for balance date
@@ -44,7 +44,7 @@ class LonEntryController extends GetxController {
     balanceDateController.value.text = DateFormat(
       'dd/MM/yyyy',
     ).format(balanceDate.value);
-      getCompany();
+    getCompany();
     await getStatusList();
     // Check if a StatementModel is passed as an argument
     if (Get.arguments is StatementModel) {
@@ -141,11 +141,16 @@ class LonEntryController extends GetxController {
       BaseResponse responses = BaseResponse();
       try {
         responses = BaseResponse.fromJson(value.data);
-        if (responses.dataList != null) {
+        if (!responses.dataList.isEmpty) {
           companyList.value = companyModelListFromJson(responses.dataList);
 
-          selectedShortCodeList.value = companyList.map((e) => e.shortCode.toString()).toList();
+          selectedShortCodeList.value =
+              companyList.map((e) => e.shortCode.toString()).toList();
 
+          selectShortCode.value = selectedShortCodeList.first;
+          selectedShortCode.value = selectShortCode.value ?? '';
+        }else{
+          selectedShortCodeList.value = ['PUBLIC'];
           selectShortCode.value = selectedShortCodeList.first;
           selectedShortCode.value = selectShortCode.value ?? '';
         }
@@ -192,6 +197,10 @@ class LonEntryController extends GetxController {
     var sssVal = double.tryParse(ss.value.text.replaceAll(',', '')) ?? 0;
     var blsVal = double.tryParse(bl.value.text.replaceAll(',', '')) ?? 0;
     var statussVal = status.value.text;
+
+    if(shortCodeVal == 'PUBLIC'){
+      shortCodeVal ='0';
+    }
 
     await LonEntryService.submitData(
           id: ids,

@@ -1,12 +1,15 @@
+import 'dart:ui' as ui;
+
+import 'package:epfin/constant/asset_images.dart';
 import 'package:epfin/infrastructure/navigation/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'dart:ui' as ui; // Required for ImageFilter
-import '../../constant/asset_images.dart';
-import 'controllers/auth.controller.dart';
 
-class AuthScreen extends GetView<AuthController> {
-  const AuthScreen({super.key});
+import 'package:get/get.dart';
+
+import 'controllers/registration.controller.dart';
+
+class RegistrationScreen extends GetView<RegistrationController> {
+  const RegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +70,7 @@ class AuthScreen extends GetView<AuthController> {
                             ),
                             const SizedBox(height: 10),
                             const Text(
-                              'Login to EPFIN',
+                              'Registration to EPFIN',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -77,6 +80,26 @@ class AuthScreen extends GetView<AuthController> {
                             const SizedBox(
                               height: 30,
                             ), // Adjust spacing to match image
+                            TextField(
+                              // obscureText: true,
+                              cursorColor: Colors.white,
+                              controller: controller.name.value,
+                              decoration: const InputDecoration(
+                                labelText: 'Enter Name',
+                                fillColor: Colors.white,
+                                focusColor: Colors.white,
+
+                                labelStyle: TextStyle(color: Colors.white),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(height: 10),
                             // Email Field
                             TextField(
                               controller: controller.email.value,
@@ -97,7 +120,7 @@ class AuthScreen extends GetView<AuthController> {
                               enabled: true, // Pre-filled, disable editing
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: 10,
                             ), // Increased spacing to match image
                             // Password Field
                             TextField(
@@ -120,11 +143,106 @@ class AuthScreen extends GetView<AuthController> {
                               style: const TextStyle(color: Colors.white),
                             ),
 
-                            const SizedBox(height: 30), // Adjusted spacing
+                            const SizedBox(height: 10),
+
+                            TextField(
+
+                              cursorColor: Colors.white,
+                              controller: controller.companyName.value,
+                              decoration: const InputDecoration(
+                                labelText: 'Company Name',
+                                fillColor: Colors.white,
+                                focusColor: Colors.white,
+
+                                labelStyle: TextStyle(color: Colors.white),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(height: 10),
+                            Obx(
+                              () => DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  labelText: "Select Role",
+                                  labelStyle: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  fillColor: Colors.white,
+                                  focusColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                ),
+                                dropdownColor: const Color(0xFF2762A1),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.white,
+                                ),
+                                iconSize: 24,
+                                isExpanded: true,
+                                hint: const Text(
+                                  "Select Role",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+
+                                  // textcolor: Colors.white,
+                                ),
+                                value:
+                                    controller
+                                        .selectedRole
+                                        .value, // can be null safely
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: "CFO",
+                                    child: Text("CFO"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "Director",
+                                    child: Text("Director"),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  controller.selectedRole.value =
+                                      value; // no need for ?? ''
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            // Adjusted spacing
                             // Login Button
                             ElevatedButton(
                               onPressed: () {
-                                controller.checkLoginStatus();
+                                controller.register();
                                 // Get.snackbar('Login', 'Login button pressed!');
                               },
                               style: ElevatedButton.styleFrom(
@@ -135,7 +253,7 @@ class AuthScreen extends GetView<AuthController> {
                                 backgroundColor: Colors.white,
                                 foregroundColor: const Color(0xFF2762A1),
                               ),
-                              child: const Text('Login'),
+                              child: const Text('Register'),
                             ),
                             const SizedBox(
                               height: 10,
@@ -156,13 +274,13 @@ class AuthScreen extends GetView<AuthController> {
                                 //     ),
                                 //   ),
                                 // ),
-                                // Register Button
+                                // // Register Button
                                 TextButton(
                                   onPressed: () {
-                                    Get.toNamed(Routes.REGISTRATION);
+                                    Get.toNamed(Routes.AUTH);
                                   },
                                   child: const Text(
-                                    'Register',
+                                    'Login',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,

@@ -17,7 +17,6 @@ class ProfileScreen extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       bottomNavigationBar: BottomNaveScreen(),
       drawer: const CustomDrawer(),
       body: Stack(
@@ -84,11 +83,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            // _profileRow(
-                            //   "User ID",
-                            //   user.userId?.toString() ?? "-",
-                            // ),
-                            // _profileRow("Host Name", user.hostName ?? "-"),
+
                             _profileRow(
                               "User Type",
                               _getUserType(user.userType),
@@ -97,12 +92,7 @@ class ProfileScreen extends GetView<ProfileController> {
                               "Last Update",
                               user.lastUpdate?.toString() ?? "-",
                             ),
-                            // _profileRow(
-                            //   "Token",
-                            //   user.token != null
-                            //       ? "Available"
-                            //       : "Not Available",
-                            // ),
+
                           ],
                         ),
                       ),
@@ -129,6 +119,60 @@ class ProfileScreen extends GetView<ProfileController> {
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
+                    SizedBox(height: 50),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              title: const Text("Confirm Deletion"),
+                              content: const Text(
+                                  "Are you sure you want to delete your account? This action cannot be undone."),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Close dialog
+                                  },
+                                  child: const Text("Cancel"),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Close dialog first
+                                    controller.deleteUser(); // Call delete function
+                                  },
+                                  child: const Text(
+                                    "Delete",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.delete, color: Colors.white),
+                      label: const Text(
+                        "Delete Account",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    )
                   ],
                 ),
               );
