@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epfin/infrastructure/dal/model/base_response.dart';
 import 'package:epfin/infrastructure/dal/model/login.model.dart';
 import 'package:epfin/infrastructure/dal/model/statement.model.dart';
@@ -28,6 +29,7 @@ class HomeController extends GetxController {
 
   var statementList = <StatementModel>[].obs;
   var statementObject = StatementModel().obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() async {
@@ -36,7 +38,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> _initializeData() async {
-    var a = await prefs.get('userInfo');
+    // var a = await prefs.get('userInfo');
     // Map<String, dynamic> userInfo = jsonDecode(prefs.getString('userInfo') ?? '{}');
     user.value = LoginModel.fromJson(
       jsonDecode(prefs.getString('userInfo') ?? '{}'),
@@ -46,9 +48,13 @@ class HomeController extends GetxController {
     final token = user.value.token;
     // name.value = (await storage.read(key: 'Name')) ?? '';
     email.value = user.value.email! ?? "";
-    name.value = user.value.name!;
+    name.value = user.value.name ?? "";
     date.value = DateFormat('dd-MMM-yyyy').format(DateTime.now());
     getStatement();
+    user.value.userTypeName == 'web'
+        ? await fetchTodaysLoanData()
+        : await getStatement();
+
     final hour = DateTime.now().hour;
     if (hour < 12) {
       greetingText.value = 'Good Morning,';
@@ -103,6 +109,41 @@ class HomeController extends GetxController {
       }
     });
     return statementObject.value;
+  }
+
+  /// Fetches today's loan data from Firestore.
+  Future<void> fetchTodaysLoanData() async {
+    if (user.value == null) {
+      return;
+    }
+
+    try {
+      final today = DateTime.now();
+      final docId = DateFormat('yyyy-MM-dd').format(today);
+      final companyName = user.value.companyName;
+
+      final docRef = _firestore
+          .collection('companies')
+          .doc(companyName)
+          .collection('loanHistory')
+          .doc(docId);
+
+      final doc = await docRef.get();
+
+      if (doc.exists) {
+        final data = doc.data()!;
+        // final List<dynamic> rawList = data['statements'] ?? [];
+        StatementModel model = StatementModel.fromJson(data);
+
+        statementList.value = [model];
+        //     rawList.map((e) => StatementModel.fromJson(e)).toList();
+      } else {
+        statementList.value = [];
+      }
+    } catch (e) {
+      print("Fetch Error: $e");
+      statementList.value = [];
+    }
   }
 
   void selectTab(String tab) {

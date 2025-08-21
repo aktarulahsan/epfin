@@ -1,4 +1,6 @@
+import 'package:epfin/firebase_options.dart';
 import 'package:epfin/infrastructure/navigation/bindings/controllers/bottom_nave.controller.binding.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ late SharedPreferences prefs;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   var initialRoute = await Routes.initialRoute;
   runApp(Main(initialRoute));
 }

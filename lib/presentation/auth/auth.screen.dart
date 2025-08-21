@@ -100,32 +100,46 @@ class AuthScreen extends GetView<AuthController> {
                               height: 20,
                             ), // Increased spacing to match image
                             // Password Field
-                            TextField(
-                              obscureText: true,
-                              cursorColor: Colors.white,
-                              controller: controller.password.value,
-                              decoration: const InputDecoration(
-                                labelText: 'Enter Password',
-                                fillColor: Colors.white,
-                                focusColor: Colors.white,
-
-                                labelStyle: TextStyle(color: Colors.white),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
+                            Obx(
+                              () => TextField(
+                                obscureText: controller.obscurePassword.value,
+                                cursorColor: Colors.white,
+                                controller: controller.password.value,
+                                decoration: InputDecoration(
+                                  labelText: 'Enter Password',
+                                  fillColor: Colors.white,
+                                  focusColor: Colors.white,
+                                  labelStyle: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      controller.obscurePassword.value
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      controller.obscurePassword.value =
+                                          !controller.obscurePassword.value;
+                                    },
+                                  ),
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
+                                style: const TextStyle(color: Colors.white),
                               ),
-                              style: const TextStyle(color: Colors.white),
                             ),
 
                             const SizedBox(height: 30), // Adjusted spacing
                             // Login Button
                             ElevatedButton(
                               onPressed: () {
-                                controller.checkLoginStatus();
-                                // Get.snackbar('Login', 'Login button pressed!');
+                                controller.checkUser();
                               },
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 50),
@@ -143,20 +157,6 @@ class AuthScreen extends GetView<AuthController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                // Forgot Password Button
-                                // TextButton(
-                                //   onPressed: () {
-                                //     Get.toNamed(Routes.FORGOTPASSWORD);
-                                //   },
-                                //   child: const Text(
-                                //     'Forgot Password?',
-                                //     style: TextStyle(
-                                //       color: Colors.white,
-                                //       fontSize: 16,
-                                //     ),
-                                //   ),
-                                // ),
-                                // Register Button
                                 TextButton(
                                   onPressed: () {
                                     Get.toNamed(Routes.REGISTRATION);

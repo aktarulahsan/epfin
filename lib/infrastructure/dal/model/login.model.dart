@@ -1,11 +1,15 @@
 import 'dart:convert';
 
-LoginModel loginResponseFromJson(String str) => LoginModel.fromJson(json.decode(str));
+LoginModel loginResponseFromJson(String str) =>
+    LoginModel.fromJson(json.decode(str));
 
 String loginResponseToJson(LoginModel data) => json.encode(data.toJson());
 
 class LoginModel {
   int? userId;
+  String? u; // For Firebase User UID
+  String? companyName; // For Firebase User Company Name
+  String? role; // For Firebase User Role
   String? name;
   String? email;
   String? password;
@@ -17,9 +21,13 @@ class LoginModel {
   String? searchText;
   String? displayText;
   String? token;
+  String? userTypeName;
 
   LoginModel({
     this.userId,
+    this.u,
+    this.companyName,
+    this.role,
     this.name,
     this.email,
     this.password,
@@ -31,10 +39,14 @@ class LoginModel {
     this.searchText,
     this.displayText,
     this.token,
+    this.userTypeName,
   });
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
     userId: json["userId"],
+    u: json["u"] ?? '',
+    companyName: json["companyName"] ?? '',
+    role: json["role"] ?? '',
     name: json["name"],
     email: json["email"],
     password: json["password"],
@@ -42,14 +54,19 @@ class LoginModel {
     exist: json["exist"],
     ischangePassword: json["ischangePassword"],
     userType: json["userType"],
-    lastUpdate: json["lastUpdate"] == null ? null : DateTime.parse(json["lastUpdate"]),
+    lastUpdate:
+        json["lastUpdate"] == null ? null : DateTime.parse(json["lastUpdate"]),
     searchText: json["searchText"],
     displayText: json["displayText"],
     token: json["token"],
+    userTypeName: json["userTypeName"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
     "userId": userId,
+    "u": u,
+    "companyName": companyName,
+    "role": role,
     "name": name,
     "email": email,
     "password": password,
@@ -61,5 +78,6 @@ class LoginModel {
     "searchText": searchText,
     "displayText": displayText,
     "token": token,
+    "userTypeName": userTypeName,
   };
 }

@@ -1,4 +1,7 @@
+import 'package:epfin/infrastructure/navigation/routes.dart';
+import 'package:epfin/presentation/home/controllers/home.controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../infrastructure/dal/model/statement.model.dart';
@@ -206,6 +209,8 @@ class LoanStatementView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<HomeController>();
+
     // Card color based on status
     Color statusColor =
         model.status == "Classical"
@@ -216,28 +221,67 @@ class LoanStatementView extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-      color: statusColor,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
-        child: Column(
-          children: [
-            // Top Row: Title, Status & Edit button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      color: Colors.white, // Card background set to white for contrast
+      child: Column(
+        children: [
+          // Header: Blue with companyName
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: Color(0xFF0078FF), // Blue header
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            ),
+            child: Text(
+              "${model.companyName}",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // White text for contrast
+              ),
+            ),
+          ),
+          // Body
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              top: 10,
+              bottom: 10,
+            ),
+            child: Column(
               children: [
-                // Title
-                Expanded(
-                  child: Text(
-                    // ${model.shortCode} -
-                    "${model.companyName}",
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                _buildInfoTile(
+                  "Total Loan",
+                  formatToIndianCurrency(model.totalLone!),
+                ),
+                _buildInfoTile(
+                  "Over Due",
+                  formatToIndianCurrency(model.overDue!),
                 ),
 
-                // Status
+                _buildInfoTile("SS", formatToIndianCurrency(model.ss!)),
+                _buildInfoTile("BL", formatToIndianCurrency(model.bl!)),
+              ],
+            ),
+          ),
+          // Footer: Blue with status and edit icon
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: Color(0xFF0078FF), // Blue footer
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -257,56 +301,48 @@ class LoanStatementView extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // Edit Button
-                // IconButton(
-                //   icon: const Icon(Icons.edit, size: 18, color: Colors.blue),
-                //   onPressed: () {
-                //     // Navigate or callback
-                //   },
+                // Container(
+                //   padding: const EdgeInsets.all(1.0),
+                //   width: context.isPhone ? 25 : 30,
+                //   height: context.isPhone ? 25 : 30,
+                //   alignment: Alignment.center,
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.rectangle,
+                //     color:
+                //         Colors
+                //             .white, // White background for edit icon to contrast with footer
+                //     borderRadius: BorderRadius.circular(4),
+                //   ),
+                //   child: InkWell(
+                //     onTap: () {
+                //       controller
+                //           .getStatementByShortCode(
+                //             model.shortCode,
+                //             model.balanceDate.toString(),
+                //           )
+                //           .then((value) {
+                //             if (value != null) {
+                //               Get.toNamed(Routes.LON_ENTRY, arguments: value);
+                //             } else {
+                //               Get.snackbar(
+                //                 "Error",
+                //                 "No data found for the selected date.",
+                //                 snackPosition: SnackPosition.BOTTOM,
+                //               );
+                //             }
+                //           });
+                //     },
+                //     child: const Icon(
+                //       Icons.edit,
+                //       size: 18,
+                //       color: Color(0xFF004AAD), // Blue icon to match theme
+                //     ),
+                //   ),
                 // ),
               ],
             ),
-
-            const SizedBox(height: 10),
-
-            // Two-column Data
-            Row(
-              children: [
-                Expanded(
-                  child: _buildInfoTile(
-                    "Total Loan",
-                    formatToIndianCurrency(model.totalLone!),
-                  ),
-                ),
-                Expanded(
-                  child: _buildInfoTile(
-                    "Over Due",
-                    formatToIndianCurrency(model.overDue!),
-                  ),
-                ),
-              ],
-            ),
-            // const SizedBox(height: 2),
-            VerticalDivider(color: Color(0xFF004AAD), thickness: 5),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildInfoTile(
-                    "SS",
-                    formatToIndianCurrency(model.ss!),
-                  ),
-                ),
-                Expanded(
-                  child: _buildInfoTile(
-                    "BL",
-                    formatToIndianCurrency(model.bl!),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -318,16 +354,17 @@ class LoanStatementView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 4,
+            flex: 5,
             child: Text(
-              "$label:",
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              "$label (BDT)",
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ),
-          const SizedBox(width: 1),
+          // SizedBox(width: 5, child: Text(":   ")),
+          Expanded(flex: 1, child: Text(":")), // Spacer for alignment
           Expanded(
-            flex: 6,
-            child: Text("৳$value", style: const TextStyle(fontSize: 12)),
+            flex: 7,
+            child: Text("$value", style: const TextStyle(fontSize: 15)),
           ),
         ],
       ),

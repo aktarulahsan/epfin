@@ -17,6 +17,10 @@ class ChangePasswordController extends GetxController {
   var isLoading = 0.obs;
   var user = LoginModel().obs;
 
+  var obscureOldPassword = true.obs;
+  var obscureNewPassword = true.obs;
+  var obscureConfiremPassword = true.obs;
+
   @override
   void onInit() {
     super.onInit();

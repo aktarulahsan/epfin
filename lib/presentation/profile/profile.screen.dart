@@ -83,20 +83,22 @@ class ProfileScreen extends GetView<ProfileController> {
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-
                             _profileRow(
                               "User Type",
-                              _getUserType(user.userType),
+
+                              user.userType != null && user.userType !=0
+                                  ? _getUserType(user.userType)
+                                  : user.role ??'',
                             ),
                             _profileRow(
                               "Last Update",
                               user.lastUpdate?.toString() ?? "-",
                             ),
-
                           ],
                         ),
                       ),
                     ),
+
 
                     const SizedBox(height: 20),
 
@@ -119,6 +121,29 @@ class ProfileScreen extends GetView<ProfileController> {
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
+
+                    SizedBox(height: 20),
+                    user.role=="Admin"?ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: (){
+                        Get.offAllNamed(Routes.CREATE_USER);
+                      },
+                      icon: const Icon(Icons.logout, color: Colors.white),
+                      label: const Text(
+                        "Create User",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ):SizedBox(),
+
                     SizedBox(height: 50),
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
@@ -141,7 +166,8 @@ class ProfileScreen extends GetView<ProfileController> {
                               ),
                               title: const Text("Confirm Deletion"),
                               content: const Text(
-                                  "Are you sure you want to delete your account? This action cannot be undone."),
+                                "Are you sure you want to delete your account? This action cannot be undone.",
+                              ),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -154,8 +180,11 @@ class ProfileScreen extends GetView<ProfileController> {
                                     backgroundColor: Colors.red,
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context).pop(); // Close dialog first
-                                    controller.deleteUser(); // Call delete function
+                                    Navigator.of(
+                                      context,
+                                    ).pop(); // Close dialog first
+                                    controller
+                                        .deleteUser(); // Call delete function
                                   },
                                   child: const Text(
                                     "Delete",
@@ -172,7 +201,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         "Delete Account",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                    )
+                    ),
                   ],
                 ),
               );

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "538852288440",
+    "project_id": "epfin-a8767",
+    "storage_bucket": "epfin-a8767.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538852288440:android:e8f24969a34730b31a514d",
+        "android_client_info": {
+          "package_name": "com.energypac.epfin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO2q6chnfl9No8ThAFC3Utbmp7DU1VjMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

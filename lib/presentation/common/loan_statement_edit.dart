@@ -262,24 +262,104 @@ class LoanStatementEdit extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-      color: statusColor,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
-        child: Column(
-          children: [
-            // Top row: Title + Status + Edit
-            Row(
+      color: Colors.white, // Card background set to white for contrast
+      child: Column(
+        children: [
+          // Header: Blue with companyName
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: Color(0xFF0078FF), // Blue header
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            ),
+            child: Text(
+              "${model.companyName}",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // White text for contrast
+              ),
+            ),
+          ),
+          // Body
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              top: 10,
+              bottom: 10,
+            ),
+            child: Column(
               children: [
-                Expanded(
-                  child: Text(
-                    // ${model.shortCode} -
-                    "${model.companyName}",
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                _buildInfoTile(
+                  "Total Loan",
+                  formatToIndianCurrency(model.totalLone!),
                 ),
+                _buildInfoTile(
+                  "Over Due",
+                  formatToIndianCurrency(model.overDue!),
+                ),
+
+                _buildInfoTile("SS", formatToIndianCurrency(model.ss!)),
+                _buildInfoTile("BL", formatToIndianCurrency(model.bl!)),
+
+                // Two-column layout for info tiles
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: _buildInfoTile(
+                //         "Total Loan",
+                //         formatToIndianCurrency(model.totalLone!),
+                //       ),
+                //     ),
+                //     const SizedBox(width: 10), // Spacing between columns
+                //     Expanded(
+                //       child: _buildInfoTile(
+                //         "Over Due",
+                //         formatToIndianCurrency(model.overDue!),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // const SizedBox(height: 6),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: _buildInfoTile(
+                //         "SS",
+                //         formatToIndianCurrency(model.ss!),
+                //       ),
+                //     ),
+                //     const SizedBox(width: 10), // Spacing between columns
+                //     Expanded(
+                //       child: _buildInfoTile(
+                //         "BL",
+                //         formatToIndianCurrency(model.bl!),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+              ],
+            ),
+          ),
+          // Footer: Blue with status and edit icon
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: Color(0xFF0078FF), // Blue footer
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -299,7 +379,6 @@ class LoanStatementEdit extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10), // Space between status and edit icon
                 Container(
                   padding: const EdgeInsets.all(1.0),
                   width: context.isPhone ? 25 : 30,
@@ -307,7 +386,9 @@ class LoanStatementEdit extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
-                    color: Color(0xFF004AAD),
+                    color:
+                        Colors
+                            .white, // White background for edit icon to contrast with footer
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: InkWell(
@@ -332,52 +413,14 @@ class LoanStatementEdit extends StatelessWidget {
                     child: const Icon(
                       Icons.edit,
                       size: 18,
-                      color: Colors.white,
+                      color: Color(0xFF004AAD), // Blue icon to match theme
                     ),
                   ),
                 ),
               ],
             ),
-
-            const SizedBox(height: 10),
-
-            // Two-column body
-            Row(
-              children: [
-                Expanded(
-                  child: _buildInfoTile(
-                    "Total Loan",
-                    formatToIndianCurrency(model.totalLone!),
-                  ),
-                ),
-                Expanded(
-                  child: _buildInfoTile(
-                    "Over Due",
-                    formatToIndianCurrency(model.overDue!),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-
-            Row(
-              children: [
-                Expanded(
-                  child: _buildInfoTile(
-                    "SS",
-                    formatToIndianCurrency(model.ss!),
-                  ),
-                ),
-                Expanded(
-                  child: _buildInfoTile(
-                    "BL",
-                    formatToIndianCurrency(model.bl!),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -389,16 +432,17 @@ class LoanStatementEdit extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 4,
+            flex: 5,
             child: Text(
-              "$label:",
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              "$label (BDT)",
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ),
-          const SizedBox(width: 1),
+          // SizedBox(width: 5, child: Text(":   ")),
+          Expanded(flex: 1, child: Text(":")), // Spacer for alignment
           Expanded(
-            flex: 6,
-            child: Text("৳$value", style: const TextStyle(fontSize: 12)),
+            flex: 7,
+            child: Text("$value", style: const TextStyle(fontSize: 15)),
           ),
         ],
       ),

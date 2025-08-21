@@ -30,6 +30,8 @@ class ApiEndPoints {
 
   static String getStatusList = "api/Account/get-status-list";
 
+  static String getUserList = "api/Account/UserGetAll";
+
   //
   // // api/Account/get-company-list?Email=sahadat.26%40gmail.com
   // static const String checkUserExist = "user/check-user";

@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epfin/infrastructure/dal/model/base_response.dart';
 import 'package:epfin/infrastructure/dal/model/company_model.dart';
+import 'package:epfin/infrastructure/dal/model/login.model.dart';
 import 'package:epfin/infrastructure/dal/services/lon_entry.service.dart';
 import 'package:epfin/main.dart';
 import 'package:flutter/material.dart';
@@ -37,10 +41,11 @@ class LonEntryController extends GetxController {
   var shortCode = ''.obs;
 
   var invalidFields = <String>[].obs;
-
+  var user = LoginModel().obs;
   @override
   Future<void> onInit() async {
     super.onInit();
+    getUser();
     balanceDateController.value.text = DateFormat(
       'dd/MM/yyyy',
     ).format(balanceDate.value);
@@ -49,6 +54,21 @@ class LonEntryController extends GetxController {
     // Check if a StatementModel is passed as an argument
     if (Get.arguments is StatementModel) {
       _prefillForm(Get.arguments as StatementModel);
+    }
+  }
+
+  Future<void> getUser() async {
+    var a = await prefs.get('userInfo');
+    Map<String, dynamic> userInfo = jsonDecode(
+      prefs.getString('userInfo') ?? '{}',
+    );
+
+    try {
+      if (a != null) {
+        user.value = LoginModel.fromJson(userInfo);
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -105,13 +125,6 @@ class LonEntryController extends GetxController {
 
   @override
   void onClose() {
-    // balanceDateController.value.dispose();
-    // selectedShortCode.value = '';
-    // totalLoan.value.dispose();
-    // overDue.value.dispose();
-    // ss.value.dispose();
-    // bl.value.dispose();
-    // status.value.dispose();
     balanceDate.value = DateTime.now();
     balanceDateController.value.clear();
     totalLoan.value.clear();
@@ -149,7 +162,7 @@ class LonEntryController extends GetxController {
 
           selectShortCode.value = selectedShortCodeList.first;
           selectedShortCode.value = selectShortCode.value ?? '';
-        }else{
+        } else {
           selectedShortCodeList.value = ['PUBLIC'];
           selectShortCode.value = selectedShortCodeList.first;
           selectedShortCode.value = selectShortCode.value ?? '';
@@ -198,8 +211,8 @@ class LonEntryController extends GetxController {
     var blsVal = double.tryParse(bl.value.text.replaceAll(',', '')) ?? 0;
     var statussVal = status.value.text;
 
-    if(shortCodeVal == 'PUBLIC'){
-      shortCodeVal ='0';
+    if (shortCodeVal == 'PUBLIC') {
+      shortCodeVal = '0';
     }
 
     await LonEntryService.submitData(
@@ -225,14 +238,6 @@ class LonEntryController extends GetxController {
                   shortCode.value.isNotEmpty
                       ? 'Data Update Successfully'
                       : 'Data Save Successfully';
-
-              // if (responseType.value == 0) {
-
-              // } else if (responseType.value == 1) {
-              //   responseMessage.value = 'Data Update Failed';
-              // } else {
-              //   responseMessage.value = 'Something Wrong';
-              // }
             } else {
               responseType.value = 1;
               responseSMS.value = responses.message!;
@@ -243,13 +248,6 @@ class LonEntryController extends GetxController {
             responseSMS.value = responses.message!;
             responseMessage.value = 'Something Wrong';
             print("Parse Error: $e");
-            // Get.defaultDialog(
-            //   title: "Warning",
-            //   middleText: "Invalid server response.",
-            //   textConfirm: "OK",
-            //   confirmTextColor: Colors.white,
-            //   onConfirm: () => Get.back(),
-            // );
           } finally {
             isLoading.value = 0;
           }
@@ -265,5 +263,70 @@ class LonEntryController extends GetxController {
             onConfirm: () => Get.back(),
           );
         });
+  }
+
+  Future<void> submitLoanData() async {
+    isLoading.value = 1;
+    var userInfo = user.value;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    try {
+      final today = DateTime.now();
+      final docId = DateFormat('yyyy-MM-dd').format(today);
+      final companyName = userInfo.companyName ?? 'UnknownCompany';
+
+      final docRef = _firestore
+          .collection('companies')
+          .doc(companyName)
+          .collection('loanHistory')
+          .doc(docId);
+
+      final doc = await docRef.get();
+
+      var shortCodeVal = selectedShortCode.value;
+      if (shortCodeVal == 'PUBLIC') {
+        shortCodeVal = '0';
+      }
+
+      final loanData = {
+        'shortCode': shortCodeVal,
+        'totalLone': double.tryParse(totalLoan.value.text.replaceAll(',', '')) ?? 0,
+        'overDue': double.tryParse(overDue.value.text.replaceAll(',', '')) ?? 0,
+        'ss': double.tryParse(ss.value.text.replaceAll(',', '')) ?? 0,
+        'bl': double.tryParse(bl.value.text.replaceAll(',', '')) ?? 0,
+        'status': status.value.text,
+        'balanceDate': docId,
+        'entryDateTime': Timestamp.now(),
+        'submittedBy': userInfo.email,
+        'companyName': userInfo.companyName,
+        'hostName': "MyHostName", // You can get this dynamically if needed
+      };
+
+      if (doc.exists) {
+        await docRef.update(loanData);
+        Get.snackbar("Success", "Loan data update successfully.");
+      } else {
+        await docRef.set(loanData);
+        Get.snackbar("Success", "Loan data save successfully.");
+      }
+
+      // Clear fields after submission
+      totalLoan.value.clear();
+      overDue.value.clear();
+      ss.value.clear();
+      bl.value.clear();
+      status.value.clear();
+    } catch (e) {
+      print("Submit Error: $e");
+      Get.defaultDialog(
+        title: "Warning",
+        middleText: "Failed to submit data.",
+        textConfirm: "OK",
+        confirmTextColor: Colors.white,
+        onConfirm: () => Get.back(),
+      );
+    } finally {
+      isLoading.value = 0;
+    }
   }
 }

@@ -23,7 +23,7 @@ class ProfileController extends GetxController {
   }
 
   Future<void> getUser() async {
-    var a = await prefs.get('userInfo');
+    var a =   prefs.get('userInfo');
     Map<String, dynamic> userInfo = jsonDecode(
       prefs.getString('userInfo') ?? '{}',
     );

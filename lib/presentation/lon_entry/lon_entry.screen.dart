@@ -79,7 +79,12 @@ class LonEntryScreen extends GetView<LonEntryController> {
                               child: TextButton(
                                 onPressed: () {
                                   if (validateFields(controller)) {
-                                    controller.submitData();
+                                    if (controller.user.value.userTypeName ==
+                                        "web") {
+                                      controller.submitLoanData();
+                                    } else {
+                                      controller.submitData();
+                                    }
                                   }
                                 },
                                 style: TextButton.styleFrom(

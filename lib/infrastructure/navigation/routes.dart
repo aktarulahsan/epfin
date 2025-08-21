@@ -12,6 +12,7 @@ class Routes {
   static const LON_ENTRY = '/lon-entry';
   static const LON_HISTORY = '/lon-history';
   static const PROFILE = '/profile';
-  static const SPLASH = '/splash';
   static const REGISTRATION = '/registration';
+  static const SPLASH = '/splash';
+  static const CREATE_USER = '/create-user';
 }

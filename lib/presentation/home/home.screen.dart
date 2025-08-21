@@ -40,7 +40,22 @@ class HomeScreen extends GetView<HomeController> {
               onPressed: () {
                 Get.offAllNamed(Routes.LON_ENTRY);
               },
-              backgroundColor: Color(0xFF004AAD), // Blue background color
+              backgroundColor: Color(0xFF0078FF), // Blue background color
+              shape:
+                  CircleBorder(), // Ensures circular shape (optional, as FAB is circular by default)
+              child: Icon(
+                Icons.add_circle_outline,
+                color: Colors.white, // White icon color
+                size: 34, // Adjust size if needed for better appearance
+              ),
+            )
+            : controller.user.value.role == 'Admin' ||
+                controller.user.value.role == 'Editor'
+            ? FloatingActionButton(
+              onPressed: () {
+                Get.offAllNamed(Routes.LON_ENTRY);
+              },
+              backgroundColor: Color(0xFF0078FF), // Blue background color
               shape:
                   CircleBorder(), // Ensures circular shape (optional, as FAB is circular by default)
               child: Icon(
