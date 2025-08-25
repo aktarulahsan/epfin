@@ -125,7 +125,7 @@ class LonHistoryScreen extends GetView<LonHistoryController> {
                   itemCount: controller.statementList.length,
                   itemBuilder: (context, index) {
                     final model = controller.statementList[index];
-                    return LoanStatementView(model: model, from: 1);
+                    return LoanStatementView(model: model, from: 1, colorCode: 0xFF2C3E50,index: index,);
                   },
                 );
               }

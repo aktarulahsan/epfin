@@ -126,19 +126,36 @@ class LonEntryScreen extends GetView<LonEntryController> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  // CircleAvatar(
+                                  //   radius: 30,
+                                  //   backgroundColor: controller.responseType.value == 0
+                                  //         ? const Colors.green
+                                  //         : controller.responseType.value == 1
+                                  //         ? const Colors.orange
+                                  //         : const Colors.red,
+
+                                  //   child: Icon(
+                                  //     controller.responseType.value == 0
+                                  //         ? Icons.check
+                                  //         : controller.responseType.value == 1
+                                  //         ? Icons.warning
+                                  //         : Icons.error,
+                                  //     size: 40,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
                                   CircleAvatar(
                                     radius: 30,
-                                    backgroundColor: const Color(0xFF4CAF50),
+                                    backgroundColor: _getBackgroundColor(
+                                      controller.responseType.value,
+                                    ),
                                     child: Icon(
-                                      controller.responseType.value == 0
-                                          ? Icons.check
-                                          : controller.responseType.value == 1
-                                          ? Icons.warning
-                                          : Icons.error,
+                                      _getIcon(controller.responseType.value),
                                       size: 40,
                                       color: Colors.white,
                                     ),
                                   ),
+
                                   const SizedBox(height: 16),
                                   Text(
                                     controller.responseMessage.value,
@@ -148,15 +165,15 @@ class LonEntryScreen extends GetView<LonEntryController> {
                                       color: Colors.black87,
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
-                                  const Text(
-                                    'Your information has been updated.',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black54,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  // const SizedBox(height: 8),
+                                  // const Text(
+                                  //   'Your information has been Save.',
+                                  //   style: TextStyle(
+                                  //     fontSize: 16,
+                                  //     color: Colors.black54,
+                                  //   ),
+                                  //   textAlign: TextAlign.center,
+                                  // ),
                                 ],
                               ),
                             ),
@@ -168,6 +185,28 @@ class LonEntryScreen extends GetView<LonEntryController> {
         ],
       ),
     );
+  }
+
+  Color _getBackgroundColor(int value) {
+    switch (value) {
+      case 0:
+        return Colors.green;
+      case 1:
+        return Colors.orange;
+      default:
+        return Colors.red;
+    }
+  }
+
+  IconData _getIcon(int value) {
+    switch (value) {
+      case 0:
+        return Icons.check;
+      case 1:
+        return Icons.warning;
+      default:
+        return Icons.error;
+    }
   }
 
   /// Validate required fields
@@ -497,7 +536,7 @@ class LonEntryScreen extends GetView<LonEntryController> {
   }
 
   Widget totalLoan(String title, TextEditingController cont, String fieldKey) {
-    final formatter = NumberFormat.decimalPattern('en_IN');
+    final formatter = NumberFormat.decimalPattern('en_US');
     final controller = Get.find<LonEntryController>();
 
     return Row(
@@ -507,7 +546,7 @@ class LonEntryScreen extends GetView<LonEntryController> {
           flex: 3,
           child: RichText(
             text: TextSpan(
-              text: '$title',
+              text: title,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,

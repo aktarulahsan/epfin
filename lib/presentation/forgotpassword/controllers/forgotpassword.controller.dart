@@ -15,6 +15,11 @@ class ForgotpasswordController extends GetxController {
   var new1PasswordCtrl = TextEditingController().obs;
   var isLoading = 0.obs;
 
+
+  var obscureOldPassword = true.obs;
+  var obscureNewPassword = true.obs;
+  var obscureConfiremPassword = true.obs;
+
   @override
   void onInit() {
     super.onInit();

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epfin/infrastructure/dal/model/base_response.dart';
@@ -31,6 +32,62 @@ class HomeController extends GetxController {
   var statementObject = StatementModel().obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
+  var grandTotalLone = 0.0.obs;
+  var grandTotalOverDue = 0.0.obs;
+  var grandTotalSS = 0.0.obs;
+  var grandTotalBL = 0.0.obs;
+  var grandTotalData = StatementModel().obs;
+
+  final List<int> professionalColorCodes = [
+    0xFF0078FF, // Dark blue-gray
+    0xFF34495E, // Charcoal blue
+    0xFF2C5282, // Navy blue
+    0xFF4A5568, // Slate gray
+    0xFF2D3748, // Dark gray-blue
+    0xFF34495E, // Charcoal blue
+    0xFF2C5282, // Navy blue
+    0xFF4A5568, // Slate gray
+    0xFF2D3748, // Dark gray-blue
+    0xFF1A365D, // Deep navy
+    0xFF2D3748, // Dark slate
+    0xFF4C6EF5, // Professional blue
+    0xFF495057, // Muted gray
+    0xFF343A40, // Dark charcoal
+
+  ];
+  var itemColors = <int>[].obs;
+
+
+  // void generateRandomColors(int itemCount) {
+  //   final random = Random();
+  //   itemColors.clear();
+  //
+  //   for (int i = 0; i < itemCount; i++) {
+  //     itemColors.add(professionalColorCodes[random.nextInt(professionalColorCodes.length)]);
+  //   }
+  // }
+  //
+  // // Function to get color for specific index
+  int getColorForIndex(int index) {
+      print(index);
+    if (index < itemColors.length) {
+      print(itemColors[index]);
+      return itemColors[index];
+    }
+
+    // Return default color if index is out of bounds
+    return itemColors[0];
+  }
+  //
+  // // Function to refresh colors
+  // void refreshColors() {
+  //   if (itemColors.isNotEmpty) {
+  //     generateRandomColors(itemColors.length);
+  //   }
+  // }
+
+
   @override
   void onInit() async {
     super.onInit();
@@ -43,6 +100,8 @@ class HomeController extends GetxController {
     user.value = LoginModel.fromJson(
       jsonDecode(prefs.getString('userInfo') ?? '{}'),
     );
+    itemColors.value = professionalColorCodes.toSet().toList();
+    itemColors.shuffle(Random());
     prefs.remove('mail');
     prefs.setString('mail', user.value.email!);
     final token = user.value.token;
@@ -50,9 +109,9 @@ class HomeController extends GetxController {
     email.value = user.value.email! ?? "";
     name.value = user.value.name ?? "";
     date.value = DateFormat('dd-MMM-yyyy').format(DateTime.now());
-    getStatement();
+    // getStatement();
     user.value.userTypeName == 'web'
-        ? await fetchTodaysLoanData()
+        ? await fetchTodayLoanData()
         : await getStatement();
 
     final hour = DateTime.now().hour;
@@ -75,6 +134,27 @@ class HomeController extends GetxController {
         responses = BaseResponse.fromJson(value.data);
         if (responses.dataList != null) {
           statementList.value = statementModelListFromJson(responses.dataList);
+
+          for (var element in statementList) {
+            grandTotalLone.value += element.totalLone!;
+            grandTotalOverDue.value += element.overDue!;
+            grandTotalSS.value += element.ss!;
+            grandTotalBL.value += element.bl!;
+          }
+          if(statementList.isNotEmpty){
+
+            grandTotalData.value.totalLone = grandTotalLone.value;
+            grandTotalData.value.overDue = grandTotalOverDue.value;
+            grandTotalData.value.ss = grandTotalSS.value;
+            grandTotalData.value.bl = grandTotalBL.value;
+            grandTotalData.value.status = '';
+            grandTotalData.value.companyName = 'Grand Total';
+            grandTotalData.value.balanceDate = DateTime.now().subtract(const Duration(days: 1));
+            // grandTotalData.value.companyName
+
+            statementList.add(grandTotalData.value);
+          }
+
         } else {}
       } catch (e) {
         print(e);
@@ -91,9 +171,7 @@ class HomeController extends GetxController {
     // isLoading.value = 1;
     // var mail = prefs.get('mail');
 
-    await HomeService.getStatementByShortCode(shortCode, date).then((
-      value,
-    ) async {
+    await HomeService.getStatementByShortCode(shortCode, date).then((value) async {
       BaseResponse responses = BaseResponse();
       try {
         responses = BaseResponse.fromJson(value.data);
@@ -112,7 +190,7 @@ class HomeController extends GetxController {
   }
 
   /// Fetches today's loan data from Firestore.
-  Future<void> fetchTodaysLoanData() async {
+  Future<void> fetchTodayLoanData() async {
     if (user.value == null) {
       return;
     }
@@ -136,7 +214,7 @@ class HomeController extends GetxController {
         StatementModel model = StatementModel.fromJson(data);
 
         statementList.value = [model];
-        //     rawList.map((e) => StatementModel.fromJson(e)).toList();
+
       } else {
         statementList.value = [];
       }

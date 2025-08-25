@@ -32,20 +32,35 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    customText(
+                    Obx(()=>customText(
                       "Old Password",
                       controller.oldPasswordCtrl.value,
-                    ),
+                      isPassword: controller.obscureOldPassword.value,
+                      onSuffixPressed: () {
+                        controller.obscureOldPassword.value =
+                        !controller.obscureOldPassword.value;
+                      },
+                    ),),
                     const SizedBox(height: 10),
-                    customText(
+                    Obx(()=>customText(
                       "New Password",
                       controller.newPasswordCtrl.value,
-                    ),
+                      isPassword: controller.obscureNewPassword.value,
+                      onSuffixPressed: () {
+                        controller.obscureNewPassword.value =
+                        !controller.obscureNewPassword.value;
+                      },
+                    ),),
                     const SizedBox(height: 10),
-                    customText(
+                    Obx(()=>customText(
                       "Confirm Password",
                       controller.new1PasswordCtrl.value,
-                    ),
+                      isPassword: controller.obscureConfiremPassword.value,
+                      onSuffixPressed: () {
+                        controller.obscureConfiremPassword.value =
+                        !controller.obscureConfiremPassword.value;
+                      },
+                    ),),
                     const SizedBox(height: 10),
 
                     SizedBox(
@@ -79,7 +94,7 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
     );
   }
 
-  Widget customText(String title, TextEditingController cont) {
+  Widget customText(String title, TextEditingController cont, {bool isPassword = false, VoidCallback? onSuffixPressed, }) {
     // final formatter = NumberFormat.decimalPattern('en_IN');
 
     return Row(
@@ -89,16 +104,18 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
           flex: 4,
           child: Text(
             title,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, ),
           ),
         ),
         Expanded(
           flex: 6,
           child: TextField(
+            obscureText: isPassword,
             controller: cont,
             keyboardType:
                 TextInputType.text, // Keep text so user can type anything
             style: const TextStyle(color: Colors.black),
+
             decoration: InputDecoration(
               isDense: true,
               contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -114,12 +131,20 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                 borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(color: Colors.blue),
               ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    isPassword ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey,
+                  ),
+                  onPressed: onSuffixPressed,   // 👈 Now dynamic
+                )
             ),
             onChanged: (value) {
               // Check if value is numeric
 
               cont.value = TextEditingValue(text: value);
             },
+
           ),
         ),
       ],

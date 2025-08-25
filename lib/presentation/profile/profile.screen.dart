@@ -87,7 +87,7 @@ class ProfileScreen extends GetView<ProfileController> {
                               "User Type",
 
                               user.userType != null && user.userType !=0
-                                  ? _getUserType(user.userType)
+                                  ? user.userTypeName ?? ''    //_getUserType(user.userType)
                                   : user.role ??'',
                             ),
                             _profileRow(
@@ -145,7 +145,7 @@ class ProfileScreen extends GetView<ProfileController> {
                     ):SizedBox(),
 
                     SizedBox(height: 50),
-                    ElevatedButton.icon(
+                    Obx(()=>controller.user.value.userType != null && user.userType !=0 ?SizedBox(): ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         padding: const EdgeInsets.symmetric(
@@ -201,7 +201,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         "Delete Account",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                    ),
+                    )),
                   ],
                 ),
               );

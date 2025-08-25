@@ -49,7 +49,7 @@ class LonEntryController extends GetxController {
     balanceDateController.value.text = DateFormat(
       'dd/MM/yyyy',
     ).format(balanceDate.value);
-    getCompany();
+    await getCompany();
     await getStatusList();
     // Check if a StatementModel is passed as an argument
     if (Get.arguments is StatementModel) {
@@ -241,7 +241,7 @@ class LonEntryController extends GetxController {
             } else {
               responseType.value = 1;
               responseSMS.value = responses.message!;
-              responseMessage.value = 'Data Update Failed';
+              responseMessage.value = responses.message!;
             }
           } catch (e) {
             responseType.value = 2;

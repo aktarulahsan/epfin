@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:epfin/infrastructure/navigation/routes.dart';
 import 'package:epfin/presentation/home/controllers/home.controller.dart';
 import 'package:flutter/material.dart';
@@ -6,222 +8,25 @@ import 'package:intl/intl.dart';
 
 import '../../infrastructure/dal/model/statement.model.dart';
 
-// class LoanStatementView extends StatelessWidget {
-//   LoanStatementView({super.key, required this.model, required this.from});
-//   StatementModel model;
-//   var from;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       height: 100, // Adjust height as needed to perfectly fit one row
-//       child: Card(
-//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//         margin: const EdgeInsets.all(5),
-//         child: Column(
-//           children: [
-//             // Header
-//             Container(
-//               height: 30,
-//               width: double.infinity,
-//               decoration: const BoxDecoration(
-//                 color: Color(0xFF5197d5),
-//                 borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-//               ),
-//               alignment: Alignment.centerLeft,
-//               padding: const EdgeInsets.symmetric(horizontal: 5),
-//               child: Text(
-//                 "${model.shortCode} ${model.companyName}",
-//                 style: const TextStyle(
-//                   color: Colors.white,
-//                   fontWeight: FontWeight.bold,
-//                   fontSize: 12,
-//                 ),
-//               ),
-//             ),
-
-//             // Table with single row
-//             Expanded(
-//               child: Table(
-//                 columnWidths: const {
-//                   0: FlexColumnWidth(2),
-//                   1: FlexColumnWidth(2),
-//                   2: FlexColumnWidth(2),
-//                   3: FlexColumnWidth(2),
-//                   4: FlexColumnWidth(2),
-//                   // 5: FlexColumnWidth(1.5),
-//                 },
-//                 border: TableBorder.all(color: Colors.grey),
-//                 children: [
-//                   // Header Row
-//                   TableRow(
-//                     decoration: const BoxDecoration(color: Color(0xFF337cf4)),
-//                     children: [
-//                       const Padding(
-//                         padding: EdgeInsets.all(2.0),
-//                         child: Text(
-//                           'Total Loan',
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 10,
-//                             color: Colors.white,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                       ),
-//                       const Padding(
-//                         padding: EdgeInsets.all(2.0),
-//                         child: Text(
-//                           'Over Due',
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 10,
-//                             color: Colors.white,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                       ),
-//                       const Padding(
-//                         padding: EdgeInsets.all(2.0),
-//                         child: Text(
-//                           'SS',
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 10,
-//                             color: Colors.white,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                       ),
-//                       const Padding(
-//                         padding: EdgeInsets.all(2.0),
-//                         child: Text(
-//                           'BL',
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 10,
-//                             color: Colors.white,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                       ),
-//                       const Padding(
-//                         padding: EdgeInsets.all(2.0),
-//                         child: Text(
-//                           'Status',
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(
-//                             fontSize: 10,
-//                             color: Colors.white,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                       ),
-//                       // from == 0
-//                       //     ? const Padding(
-//                       //       padding: EdgeInsets.all(2.0),
-//                       //       child: Text(''),
-//                       //     )
-//                       //     : const SizedBox(),
-//                     ],
-//                   ),
-
-//                   // One Data Row
-//                   TableRow(
-//                     children: [
-//                       Padding(
-//                         padding: const EdgeInsets.all(1.0),
-//                         child: Text(
-//                           formatToIndianCurrency(model.totalLone!),
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(fontSize: 11),
-//                         ),
-//                       ),
-//                       Padding(
-//                         padding: const EdgeInsets.all(1.0),
-//                         child: Text(
-//                           formatToIndianCurrency(model.overDue!),
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(fontSize: 11),
-//                         ),
-//                       ),
-//                       Padding(
-//                         padding: const EdgeInsets.all(1.0),
-//                         child: Text(
-//                           formatToIndianCurrency(model.ss!),
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(fontSize: 11),
-//                         ),
-//                       ),
-//                       Padding(
-//                         padding: const EdgeInsets.all(1.0),
-//                         child: Text(
-//                           formatToIndianCurrency(model.bl!),
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(fontSize: 11),
-//                         ),
-//                       ),
-//                       Padding(
-//                         padding: const EdgeInsets.all(1.0),
-//                         child: Text(
-//                           '${model.status}',
-//                           textAlign: TextAlign.center,
-//                           style: TextStyle(fontSize: 11),
-//                         ),
-//                       ),
-//                       // from == 0
-//                       //     ? Padding(
-//                       //       padding: const EdgeInsets.all(1.0),
-//                       //       child: InkWell(
-//                       //         onTap: () {
-//                       //           Get.toNamed(
-//                       //             Routes
-//                       //                 .LON_ENTRY, // Assuming Routes.LOAN_ENTRY points to LonEntryScreen
-//                       //             arguments:
-//                       //                 model, // Pass the StatementModel object as an argument
-//                       //           );
-//                       //         },
-//                       //         child: Icon(Icons.edit, size: 16),
-//                       //       ),
-//                       //     )
-//                       //     : SizedBox(),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   String formatToIndianCurrency(double value) {
-//     final format = NumberFormat.decimalPattern('en_IN');
-//     return format.format(value);
-//   }
-// }
 
 class LoanStatementView extends StatelessWidget {
-  LoanStatementView({super.key, required this.model, required this.from});
+  const LoanStatementView({super.key, required this.model, required this.from, required this.colorCode, required this.index});
   final StatementModel model;
   final dynamic from;
+  final int? colorCode;
+  final int? index;
+
+
+
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<HomeController>();
-
-    // Card color based on status
-    Color statusColor =
-        model.status == "Classical"
-            ? Colors.green.shade100
-            : Colors.red.shade100;
-
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-      color: Colors.white, // Card background set to white for contrast
+      color: Color(0xFFf0f2f5), // Card background set to white for contrast
       child: Column(
         children: [
           // Header: Blue with companyName
@@ -229,7 +34,8 @@ class LoanStatementView extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
-              color: Color(0xFF0078FF), // Blue header
+              color: model.companyName =='Grand Total'?  Color(0xFF8599ad): Color(0xFF3399ff), // Blue header
+              // color: Color(colorCode!),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
@@ -244,36 +50,72 @@ class LoanStatementView extends StatelessWidget {
               ),
             ),
           ),
-          // Body
           Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-              top: 10,
-              bottom: 10,
-            ),
-            child: Column(
-              children: [
-                _buildInfoTile(
-                  "Total Loan",
-                  formatToIndianCurrency(model.totalLone!),
-                ),
-                _buildInfoTile(
-                  "Over Due",
-                  formatToIndianCurrency(model.overDue!),
-                ),
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 10,
+              ),
 
-                _buildInfoTile("SS", formatToIndianCurrency(model.ss!)),
-                _buildInfoTile("BL", formatToIndianCurrency(model.bl!)),
-              ],
-            ),
+              child:_buildLoanTable({
+                "Total Loan":
+                formatToIndianCurrency(model.totalLone!),
+                "Over Due": formatToIndianCurrency(model.overDue!),
+                "SS":formatToIndianCurrency(model.ss!),
+                "BL": formatToIndianCurrency(model.bl!),
+              })
+
+          //     Table(
+          //   border: TableBorder.all(color: Colors.black26), // Optional outer border
+          //   columnWidths: const {
+          //     0: FlexColumnWidth(5),
+          //     1: FlexColumnWidth(1),
+          //     2: FlexColumnWidth(7),
+          //   },
+          //   children: [
+          //     _buildInfoTableRow( "Total Loan",
+          //       formatToIndianCurrency(model.totalLone!)),
+          //     _buildInfoTableRow("Over Due",
+          //       formatToIndianCurrency(model.overDue!)),
+          //     _buildInfoTableRow("SS", formatToIndianCurrency(model.ss!)),
+          //     _buildInfoTableRow("BL", formatToIndianCurrency(model.bl!)),
+          //   ],
+          // )
+
+
           ),
+          // Body
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     left: 10,
+          //     right: 10,
+          //     top: 10,
+          //     bottom: 10,
+          //   ),
+          //   child: Column(
+          //     children: [
+          //       _buildInfoTile(
+          //         "Total Loan",
+          //         formatToIndianCurrency(model.totalLone!),
+          //       ),
+          //       _buildInfoTile(
+          //         "Over Due",
+          //         formatToIndianCurrency(model.overDue!),
+          //       ),
+          //
+          //       _buildInfoTile("SS", formatToIndianCurrency(model.ss!)),
+          //       _buildInfoTile("BL", formatToIndianCurrency(model.bl!)),
+          //     ],
+          //   ),
+          // ),
           // Footer: Blue with status and edit icon
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
-              color: Color(0xFF0078FF), // Blue footer
+              color: model.companyName =='Grand Total'?  Color(0xFF8599ad): Color(0xFF3399ff), // Blue header// Blue footer
+              // color: Color(colorCode!),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(12),
                 bottomRight: Radius.circular(12),
@@ -289,7 +131,7 @@ class LoanStatementView extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color:
-                        model.status == "Classical" ? Colors.green : Colors.red,
+                        model.status == "Classical" ? Colors.green : model.status == "" ? Color(0xFF8599ad) : Colors.red,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -301,44 +143,7 @@ class LoanStatementView extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Container(
-                //   padding: const EdgeInsets.all(1.0),
-                //   width: context.isPhone ? 25 : 30,
-                //   height: context.isPhone ? 25 : 30,
-                //   alignment: Alignment.center,
-                //   decoration: BoxDecoration(
-                //     shape: BoxShape.rectangle,
-                //     color:
-                //         Colors
-                //             .white, // White background for edit icon to contrast with footer
-                //     borderRadius: BorderRadius.circular(4),
-                //   ),
-                //   child: InkWell(
-                //     onTap: () {
-                //       controller
-                //           .getStatementByShortCode(
-                //             model.shortCode,
-                //             model.balanceDate.toString(),
-                //           )
-                //           .then((value) {
-                //             if (value != null) {
-                //               Get.toNamed(Routes.LON_ENTRY, arguments: value);
-                //             } else {
-                //               Get.snackbar(
-                //                 "Error",
-                //                 "No data found for the selected date.",
-                //                 snackPosition: SnackPosition.BOTTOM,
-                //               );
-                //             }
-                //           });
-                //     },
-                //     child: const Icon(
-                //       Icons.edit,
-                //       size: 18,
-                //       color: Color(0xFF004AAD), // Blue icon to match theme
-                //     ),
-                //   ),
-                // ),
+
               ],
             ),
           ),
@@ -347,32 +152,125 @@ class LoanStatementView extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoTile(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 1, right: 1, bottom: 1),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 5,
-            child: Text(
-              "$label (BDT)",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+  // Widget _buildInfoTile(String label, String value) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 1, right: 1, bottom: 1),
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Expanded(
+  //           flex: 5,
+  //           child: Container(
+  //             decoration: BoxDecoration(color: Colors.black12),
+  //             child: Text(
+  //               "$label (BDT)",
+  //               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+  //             ),
+  //           )
+  //         ),
+  //         // SizedBox(width: 5, child: Text(":   ")),
+  //         Expanded(flex: 1, child: Text(":")), // Spacer for alignment
+  //         Expanded(
+  //           flex: 7,
+  //           child: Text("$value", style: const TextStyle(fontSize: 15)),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Table _buildLoanTable(Map<String, String> data) {
+    return Table(
+      border: TableBorder.all(color: Colors.black26), // shared borders
+      columnWidths: const {
+        0: FlexColumnWidth(5), // Label column
+        1: FlexColumnWidth(1), // Separator
+        2: FlexColumnWidth(7), // Value column
+      },
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle, // Center content vertically
+      children: data.entries.map((entry) {
+        return TableRow(
+          decoration: const BoxDecoration(color: Colors.white), // Row background
+          children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Container(
+                padding: const EdgeInsets.all(2),
+                child: Text(
+                  "${entry.key} (BDT)",
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                ),
+              ),
             ),
-          ),
-          // SizedBox(width: 5, child: Text(":   ")),
-          Expanded(flex: 1, child: Text(":")), // Spacer for alignment
-          Expanded(
-            flex: 7,
-            child: Text("$value", style: const TextStyle(fontSize: 15)),
-          ),
-        ],
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(left: 0),
+                child: const Text(":"),
+              ),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Container(
+                padding: const EdgeInsets.all(2),
+                child: Text(
+                  entry.value,
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  TableRow _buildInfoTableRow(String label, String value) {
+    return TableRow(
+      decoration: const BoxDecoration(
+        color: Colors.white, // Row background
       ),
+      children: [
+        // Label Cell
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black26),
+            color: Colors.white,
+          ),
+          child: Text(
+            "$label (BDT)",
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+          ),
+        ),
+        // Separator Cell
+        Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black26),
+            color: Colors.white,
+          ),
+          child: const Text(":"),
+        ),
+        // Value Cell
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black26),
+            color: Colors.white,
+          ),
+          child: Text(
+            "$value",
+            style: const TextStyle(fontSize: 15),
+          ),
+        ),
+      ],
     );
   }
 
   String formatToIndianCurrency(double value) {
-    final format = NumberFormat.decimalPattern('en_IN');
+    final format = NumberFormat.decimalPattern('en_US');
     return format.format(value);
   }
 }

@@ -30,7 +30,7 @@ class HomeService {
     var dio = Dio();
     var url =
         '${ApiEndPoints.baseUrl}${ApiEndPoints.getStatementByShortCode(shortCode, date)}';
-    print("url - logIn $url");
+    print("url - getStatementByShortCode $url");
     try {
       response = await dio.get(
         url,
