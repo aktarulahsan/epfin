@@ -21,7 +21,7 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
             top: 0,
             left: 0,
             right: 0,
-            child: Topbar(title: "Change Password"),
+            child: Topbar(title: "Update Password"),
           ),
 
           Positioned(

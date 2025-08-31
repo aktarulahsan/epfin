@@ -7,6 +7,7 @@ import 'package:epfin/infrastructure/dal/services/auth.service.dart';
 import 'package:epfin/infrastructure/navigation/bindings/controllers/controllers_bindings.dart';
 import 'package:epfin/infrastructure/navigation/routes.dart';
 import 'package:epfin/main.dart';
+import 'package:epfin/presentation/forgotpassword/forgotpassword.screen.dart';
 import 'package:epfin/presentation/home/home.screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class AuthController extends GetxController {
   Future<void> checkUser() async {
    await getStatusList();
     final match = userLists.value.firstWhere(
-          (v) => v == email.value.text.trim(),
+          (v) => v.toLowerCase() == email.value.text.trim().toLowerCase(),
       orElse: () => '', // return empty if not found
     );
 
@@ -82,9 +83,14 @@ class AuthController extends GetxController {
               prefs.remove("userInfo");
               prefs.setString('userInfo', jsonEncode(responses.data));
 
+              prefs.remove('mail');
+              prefs.setString('mail', user.email!);
+
               if (user.ischangePassword == false) {
-                Get.offAllNamed(Routes.FORGOTPASSWORD);
+                // Get.offAllNamed(Routes.FORGOTPASSWORD);
+                Get.offAll(ForgotpasswordScreen(), binding: ForgotpasswordControllerBinding());
               } else {
+
                 Get.offAll(HomeScreen(), binding: HomeControllerBinding());
               }
             } else {
@@ -172,8 +178,26 @@ class AuthController extends GetxController {
         Get.offAll(HomeScreen(), binding: HomeControllerBinding());
 
         clearFields();
+      }else{
+        Get.snackbar(
+          "Login Failed",
+          "Invalid email or password",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red.withOpacity(0.8),
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(10),
+        );
       }
     } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        "Login Failed",
+        "Invalid email or password",
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.withOpacity(0.8),
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+      );
+
       error.value = e.message ?? 'An unknown error occurred.';
     } catch (e) {
       error.value = 'Failed to sign in. Please try again.';

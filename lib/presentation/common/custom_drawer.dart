@@ -39,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.password),
-            title: const Text('Change Password'),
+            title: const Text('Change 2 Password'),
             onTap: () {
               Get.back();
               Get.offAllNamed(Routes.CHANGE_PASSWORD);

@@ -509,7 +509,7 @@ class LonEntryScreen extends GetView<LonEntryController> {
               child: GestureDetector(
                 // onTap: () => controller.pickDate(Get.context!),
                 onTap:
-                    controller.id.value == null ||
+                    controller.id.value == 0 ||
                             controller.id.value.toString().isEmpty
                         ? () => controller.pickDate(Get.context!)
                         : null, // Disable tap if id
